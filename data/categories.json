@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "late-night-bites",
+    "title": "Late Night Bites",
+    "caption": "Food you can get after midnight without regret.",
+    "icon": "/icons/sigil-moon.svg",
+    "order": 1
+  },
+  {
+    "slug": "classic-vegas",
+    "title": "Classic Vegas",
+    "caption": "Old school glam, neon glow, and iconic rooms.",
+    "icon": "/icons/sigil-dice.svg",
+    "order": 2
+  },
+  {
+    "slug": "cocktails",
+    "title": "Cocktails",
+    "caption": "Strong pours, soft booths, and good conversation.",
+    "icon": "/icons/sigil-cocktail.svg",
+    "order": 3
+  },
+  {
+    "slug": "views",
+    "title": "Views",
+    "caption": "Skyline and desert lights without the velvet rope.",
+    "icon": "/icons/sigil-eye.svg",
+    "order": 4
+  },
+  {
+    "slug": "arts-district",
+    "title": "Arts District",
+    "caption": "Creative blocks, walkable bars, and street-lit patios.",
+    "icon": "/icons/sigil-grid.svg",
+    "order": 5
+  },
+  {
+    "slug": "low-key",
+    "title": "Low Key",
+    "caption": "Quiet corners when you need the volume down.",
+    "icon": "/icons/sigil-hush.svg",
+    "order": 6
+  },
+  {
+    "slug": "dessert",
+    "title": "Dessert Runs",
+    "caption": "Sweet finales, late night treats, sugar stops.",
+    "icon": "/icons/sigil-spark.svg",
+    "order": 7
+  },
+  {
+    "slug": "breakfast",
+    "title": "Breakfast Reset",
+    "caption": "Morning recovery fuel with real coffee and calm.",
+    "icon": "/icons/sigil-sun.svg",
+    "order": 8
+  },
+  {
+    "slug": "music",
+    "title": "Live Music",
+    "caption": "Small stages, big energy, no stadium hassles.",
+    "icon": "/icons/sigil-wave.svg",
+    "order": 9
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "esthers-kitchen",
+    "name": "Esther's Kitchen",
+    "categories": ["arts-district", "low-key"],
+    "area": "Arts District",
+    "lat": 36.1587,
+    "lng": -115.1496,
+    "oneLiner": "Handmade pasta and wine when you want cozy but serious food.",
+    "story": "This is my go-to for a real dinner without Strip chaos. The room feels warm and local, and the pasta never misses. Sit at the bar if you want to chat with the staff and feel like a regular.",
+    "signatureMove": "Order the seasonal pasta and split a bottle.",
+    "bestTime": "Weeknights before 7 or late lunch.",
+    "vibes": ["Cozy", "Date-worthy", "Neighborhood"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Esther%27s%20Kitchen%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Esther%27s%20Kitchen&ll=36.1587,-115.1496",
+      "instagramUrl": "https://www.instagram.com/estherslv/",
+      "websiteUrl": "https://www.estherslv.com/",
+      "phone": "+1 702-570-1080"
+    },
+    "images": ["/places/esthers-kitchen.svg"],
+    "warnings": "Reservations help on weekends."
+  },
+  {
+    "id": "golden-tiki",
+    "name": "The Golden Tiki",
+    "categories": ["cocktails", "late-night-bites"],
+    "area": "Chinatown",
+    "lat": 36.1255,
+    "lng": -115.1989,
+    "oneLiner": "Wild tiki bar with strong drinks and louder decor.",
+    "story": "If you want a night that feels like a movie set, this is it. The drinks are generous, the soundtrack is loud, and the room is full of little surprises. Bring friends who will commit to the theme.",
+    "signatureMove": "Grab the Mai Tai and claim a booth.",
+    "bestTime": "After 10pm when the neon wakes up.",
+    "vibes": ["Neon", "Playful", "Loud"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20Golden%20Tiki%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=The%20Golden%20Tiki&ll=36.1255,-115.1989",
+      "instagramUrl": "https://www.instagram.com/thegoldentiki/",
+      "websiteUrl": "https://www.thegoldentiki.com/",
+      "phone": "+1 702-222-3191"
+    },
+    "images": ["/places/golden-tiki.svg"],
+    "warnings": "Lines form on weekend nights."
+  },
+  {
+    "id": "skyfall-lounge",
+    "name": "Skyfall Lounge",
+    "categories": ["views", "cocktails"],
+    "area": "Strip",
+    "lat": 36.0918,
+    "lng": -115.1763,
+    "oneLiner": "High floor view with velvet booths and a night breeze.",
+    "story": "This is where I take people who want a skyline moment without a club ticket. The elevator ride alone feels cinematic. Show up at sunset and the whole city flips on around you.",
+    "signatureMove": "Arrive at sunset and order the mezcal cocktail.",
+    "bestTime": "Sunset into early night.",
+    "vibes": ["Glam", "Panoramic", "Dressy"],
+    "price": "$$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Skyfall%20Lounge%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Skyfall%20Lounge&ll=36.0918,-115.1763",
+      "websiteUrl": "https://www.delanolasvegas.com/en/nightlife/skyfall-lounge.html",
+      "phone": "+1 702-632-7777"
+    },
+    "images": ["/places/skyfall-lounge.svg"],
+    "warnings": "Dress code leans upscale."
+  },
+  {
+    "id": "tacos-el-gordo",
+    "name": "Tacos El Gordo",
+    "categories": ["late-night-bites"],
+    "area": "Strip",
+    "lat": 36.1343,
+    "lng": -115.1624,
+    "oneLiner": "Fast line, perfect al pastor, zero drama.",
+    "story": "This is the move when everyone is hungry and you need one answer. Order at the al pastor window, grab salsas, and keep it moving. It is cheap, fast, and always hits.",
+    "signatureMove": "Order al pastor tacos and a vampiro.",
+    "bestTime": "After midnight or before the clubs.",
+    "vibes": ["Fast", "Crowded", "No-frills"],
+    "price": "$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tacos%20El%20Gordo%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Tacos%20El%20Gordo&ll=36.1343,-115.1624",
+      "websiteUrl": "https://tacoselgordobc.com/",
+      "phone": "+1 702-675-0005"
+    },
+    "images": ["/places/tacos-el-gordo.svg"],
+    "warnings": "Expect a line after shows."
+  },
+  {
+    "id": "neon-museum",
+    "name": "The Neon Museum",
+    "categories": ["classic-vegas", "arts-district"],
+    "area": "Downtown",
+    "lat": 36.1789,
+    "lng": -115.1355,
+    "oneLiner": "Vintage neon boneyard with real Vegas history.",
+    "story": "If you want proof that old Vegas still glows, start here. The outdoor yard is full of rescued signs and quiet stories. Go at night for the full effect and bring a jacket.",
+    "signatureMove": "Book the night tour and bring a hoodie.",
+    "bestTime": "After dark, especially midweek.",
+    "vibes": ["Nostalgic", "Photo-worthy", "Quiet"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20Neon%20Museum%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=The%20Neon%20Museum&ll=36.1789,-115.1355",
+      "websiteUrl": "https://www.neonmuseum.org/",
+      "phone": "+1 702-387-6366"
+    },
+    "images": ["/places/neon-museum.svg"],
+    "warnings": "Tickets sell out on weekends."
+  }
+]
