@@ -16,24 +16,31 @@ export default function HeaderNav() {
   const pageLabel = getPageLabel(pathname);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--border-color)] bg-[rgba(10,10,12,0.9)] backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[color:var(--border-color)] bg-[rgba(5,5,5,0.92)] backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-10">
         <Link href="/" className="flex items-center gap-3">
           <span className="hud-meta text-[color:var(--color-yellow)]">
             // LV-OPS
           </span>
-          <span className="display-title text-base tracking-[0.18em] text-[color:var(--text-body)] sm:text-lg">
+          <span className="display-title text-base tracking-[0.18em] text-[color:var(--text-hologram)] sm:text-lg">
             CHECKTHISPLACEOUT
           </span>
         </Link>
         <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-[color:var(--accent-electric-cyan)]">
+            <span
+              aria-hidden="true"
+              className="h-2 w-2 animate-pulse bg-[color:var(--accent-electric-cyan)] shadow-[0_0_8px_rgba(0,240,255,0.7)]"
+            />
+            <span className="font-mono">SYS.ONLINE</span>
+          </div>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs">
-            <span className="hud-meta text-[color:var(--text-muted)]">
+            <span className="hud-meta text-[color:var(--text-dim)]">
               // {pageLabel}
             </span>
             <span className="cursor-block" aria-hidden="true" />
           </div>
-          <nav className="hidden gap-5 text-xs uppercase tracking-[0.3em] text-[color:var(--text-muted)] sm:flex">
+          <nav className="hidden gap-5 text-xs uppercase tracking-[0.3em] text-[color:var(--text-dim)] sm:flex">
             <Link className="hover:text-[color:var(--color-cyan)]" href="/about">
               About
             </Link>

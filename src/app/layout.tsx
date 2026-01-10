@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
-import { Chakra_Petch, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import {
+  Chakra_Petch,
+  JetBrains_Mono,
+  Space_Grotesk
+} from "next/font/google";
 import Link from "next/link";
 import HeaderNav from "@/components/HeaderNav";
 import ThemeBackground from "@/components/ThemeBackground";
@@ -12,7 +16,7 @@ import ScrollGauge from "@/components/ScrollGauge";
 const displayFont = Chakra_Petch({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["700"]
+  weight: ["600", "700"]
 });
 
 const bodyFont = Space_Grotesk({
@@ -48,10 +52,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} font-body antialiased`}
+        className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} bg-terminal-black font-body text-hologram antialiased`}
       >
         <ThemeBackground />
         <PageFlash />
+        <div aria-hidden="true" className="scanlines z-50" />
         <ScrollGauge />
         <div className="relative z-10 flex min-h-screen flex-col">
           <HeaderNav />

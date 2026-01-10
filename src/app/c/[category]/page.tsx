@@ -14,14 +14,17 @@ export default function CategoryPage({
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-      <header className="panel flex flex-col gap-3 border-2 border-[color:var(--border-color)] p-6 sm:p-8">
-        <p className="hud-meta text-[color:var(--text-muted)]">
+      <header className="panel flex flex-col gap-3 border border-[color:var(--border-color)] p-6 sm:p-8">
+        <p className="hud-meta text-[color:var(--text-dim)]">
           // {places.length} picks
         </p>
-        <h1 className="display-title text-3xl text-[color:var(--text-body)] md:text-4xl">
+        <p className="hud-meta text-[color:var(--text-dim)]">
+          // ACCESSING_LOCAL_DB
+        </p>
+        <h1 className="display-title text-3xl text-[color:var(--text-hologram)] md:text-4xl">
           {category.title}
         </h1>
-        <p className="max-w-2xl text-base text-[color:var(--text-muted)]">
+        <p className="max-w-2xl text-base text-[color:var(--text-dim)]">
           {category.caption}
         </p>
       </header>

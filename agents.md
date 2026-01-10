@@ -1,295 +1,167 @@
-# AGENTS.md — CheckThisPlaceOut.com (v1.0)
+# AGENTS.md — CheckThisPlaceOut.com (v0.6 - UI Overhaul)
 
-This file defines how agents (Codex CLI or other coding agents) should plan, implement, and validate v1.0 of CheckThisPlaceOut.com.
+**Current Context:** UI/Brand Overhaul ("Retro-Futurist Ops Terminal")
+**System Status:** Functional Logic Stable // Visual Layer Refactor Required
 
----
-
-## 0) One-sentence mission
-Ship a mobile-first, personality-rich Vegas guide that lets a QR-scan user pick a category, choose a place, read a short “friend-text” blurb, and open directions in one tap.
+This file defines the strict instructions for agents (Codex CLI, etc.) to implement the **v0.6 Visual Overhaul** of CheckThisPlaceOut.com. The goal is to apply a "Las Vegas Night Ride / Cyberpunk Terminal" aesthetic without breaking existing routing or data validation.
 
 ---
 
-## 1) Hard guardrails (do not violate)
-### MUST NOT include in v1.0
-- No external API calls for hours/photos/open-now.
-- No Uber/Lyft pricing, transport cost, or routing APIs.
-- No user accounts, login, reviews, comments, or submissions.
-- No database or CMS (content is local files).
-- No analytics requirements beyond basic page views (optional only).
+## 0) Mission Directive
+Reskin the existing functional MVP into a **high-fidelity, retro-futuristic operations terminal**.
+The user experience should feel like a "local friend's hacked dossier" of Vegas secrets—dark, neon-accented, slightly gritty, but purely functional.
 
-### MUST include in v1.0
-- Home with category tiles.
-- Category page with List default and Map toggle.
-- Place detail page with story + primary actions.
-- Deep links to Maps (Directions + Open in Maps).
-- Strong readability and accessibility on mobile, even with heavy visual personality.
-- `prefers-reduced-motion` support (reduced/disabled motion and particles).
+**Core Vibe:** High-contrast, vector-sharp, HUD (Heads-Up Display) elements, scanlines, and "system status" microcopy.
 
 ---
 
-## 2) Success criteria (what “done” means)
-A first-time tourist can:
-1) Open the site from QR in a bar,
-2) Tap a category tile,
-3) Scan a list of curated cards,
-4) Open a place detail,
-5) Tap Directions and arrive in Maps,
-All within ~10 seconds of arriving on the site.
+## 1) Hard Guardrails (IMMUTABLE)
+### 1.1 Technical Constraints
+- **NO** external API calls (Google Places, Yelp, etc.).
+- **NO** database/auth/CMS (remain `JSON`-driven).
+- **NO** breaking the `npm run validate` schema checks.
+- **NO** WebGL/Canvas shaders that kill mobile battery (use CSS/SVG only).
+
+### 1.2 UX Constraints
+- **Readability First:** The "cyberpunk" aesthetic MUST NOT compromise text legibility.
+  - *Rule:* Body text is always high-contrast off-white on dark. No dark-red text on black.
+- **Mobile Performance:** Complex borders/glows must be CSS-optimized.
+- **Motion:** Respect `prefers-reduced-motion` absolutely.
 
 ---
 
-## 3) Tech stack (recommended defaults)
-- Next.js (App Router)
-- Tailwind CSS
-- Framer Motion (transitions + micro-interactions)
-- Leaflet for map UI (simple pins + interaction)
-- Content: `data/categories.json`, `data/places.json`
-- Images: `/public/places/**`
-- Deployment: Vercel-compatible
+## 2) Visual Design System (The "Brand Kit")
 
-Avoid heavy GPU effects, shaders, and large particle libraries.
+### 2.1 Color Palette (Tailwind Config)
+Implement these exact tokens in `tailwind.config.js`:
 
----
+* **Backgrounds:**
+    * `bg-terminal-black`: `#050505` (Main surface)
+    * `bg-terminal-dark`: `#0a0f14` (Card backgrounds)
+    * `bg-scanline`: `rgba(0,0,0,0.5)` (Overlay texture)
+* **Accents (Neon Signal Layer):**
+    * `accent-neon-green`: `#00ff41` (Success / Active / "GO")
+    * `accent-cyber-yellow`: `#fcee0a` (Warning / Highlight)
+    * `accent-electric-cyan`: `#00f0ff` (Links / Info)
+    * `accent-hot-pink`: `#ff00ff` (Vibe tags / "Fun")
+* **Neutrals:**
+    * `text-hologram`: `#e0e0e0` (Primary text)
+    * `text-dim`: `#6b7280` (Secondary/labels)
+    * `border-hud`: `#333333` (Inactive borders)
 
-## 4) Information architecture (routes)
-- `/` Home (category tiles)
-- `/c/[category]` Category page (List default, Map toggle)
-- `/p/[placeId]` Place detail page
-- `/about` (optional but recommended for personal framing)
-- `/privacy` (minimal)
+### 2.2 Typography
+* **Headlines (Display):** Monospaced or "Tech" sans-serif (e.g., *JetBrains Mono*, *Space Mono*, or *Chakra Petch*). Uppercase styling often used.
+* **Body (Readability):** Clean, modern sans-serif (e.g., *Inter* or *Switzer*) for long-form story text.
+* **Microcopy:** Monospace, all-caps, small size (e.g., `text-[10px] tracking-widest`).
 
----
-
-## 5) Data contracts (single source of truth)
-### 5.1 `data/categories.json`
-Each item:
-- `slug` (string, unique, URL-safe)
-- `title` (string)
-- `caption` (string, 6–12 words)
-- `icon` (string; icon name or asset path)
-- `order` (number)
-
-### 5.2 `data/places.json`
-Each item:
-- `id` (string, unique)
-- `name` (string)
-- `categories` (string[] of category slugs)
-- `area` (string; e.g., "Arts District", "Fremont", "Chinatown")
-- `lat` (number)
-- `lng` (number)
-- `oneLiner` (string; 1 line “why I send people here”)
-- `story` (string; 2–6 sentences max)
-- `signatureMove` (string; “Order/Do this”)
-- `bestTime` (string; simple)
-- `vibes` (string[]; 2–5 tags)
-- `price` (string; "$" | "$$" | "$$$" | "" optional)
-- `links` (object):
-  - `googleMapsUrl` (string, REQUIRED)
-  - `appleMapsUrl` (string, optional)
-  - `instagramUrl` (string, optional)
-  - `websiteUrl` (string, optional)
-  - `phone` (string, optional)
-- `images` (string[] local paths; optional but recommended)
-- Optional:
-  - `warnings` (string[] or string)
-  - `accessibilityNotes` (string)
-
-### 5.3 Validation requirements
-Build-time (or pre-commit) validation must:
-- Ensure unique `id` and `slug`.
-- Ensure each `place.categories[]` exists in categories.
-- Ensure lat/lng are numbers within valid ranges.
-- Ensure `links.googleMapsUrl` is present and URL-shaped.
-- Warn (not fail) on missing optional fields.
+### 2.3 UI Motifs & Patterns
+1.  **The "HUD" Container:** Cards have 1px borders, 45-degree cut corners (clip-path), and optional corner "brackets."
+2.  **Scanlines:** A global `pointer-events-none` fixed overlay with a subtle CRT scanline repeating linear-gradient.
+3.  **Grid Background:** A very faint (`opacity-5`) micro-grid in the page background.
+4.  **Glow:** Use `box-shadow` sparing for active states (buttons, selected inputs).
+5.  **Status Indicators:** Small blinking squares or "LEDs" next to headers.
 
 ---
 
-## 6) UX requirements (mobile-first)
-### 6.1 Home
-- 8–12 category tiles.
-- Large tap targets (>= 44px height), readable without zoom.
-- Clear hierarchy; the vibe is in borders/icons/microcopy, not tiny text.
+## 3) Component Overhaul Plan
 
-### 6.2 Category page (List default)
-PlaceCard must show:
-- Name, area, one-liner, vibe tags, optional price.
-- Primary CTA: **Directions**
-- Secondary CTA: **Open in Maps**
-- Optional quick links: Instagram, Website, Call (only if present)
+### 3.1 Global Layout (`layout.tsx`)
+- Apply `bg-terminal-black` globally.
+- Add the **Scanline/Noise Overlay** component (z-index 50, pointer-events-none).
+- Update Header:
+  - Left: Logo (Wordmark: "CHECKTHISPLACEOUT")
+  - Right: "SYS.ONLINE" status indicator (green dot).
 
-Card tap (or “Details”) goes to `/p/[placeId]`.
+### 3.2 Category Tiles (`CategoryTile.tsx`)
+- **Old:** Simple card.
+- **New:** "Data Cartridge" style.
+  - Border: 1px solid `border-hud`.
+  - Hover: Border becomes `accent-neon-green` + subtle glow.
+  - Content: Icon (vector style), Title (Mono uppercase), "Item Count" badge (e.g., `[04]`).
 
-### 6.3 Category page (Map toggle)
-- Toggle: List | Map.
-- Pins for places in this category.
-- Tap pin opens a mobile bottom sheet (or panel) with:
-  - Name, one-liner
-  - Directions / Open in Maps
-  - Link to details
+### 3.3 Place Card (`PlaceCard.tsx`)
+- **Style:** "File Dossier."
+- **Typography:**
+  - Name: H3, Bold, `text-hologram`.
+  - Area: `text-accent-electric-cyan`, Monospace.
+- **Actions:** Buttons become "Tactical Inputs."
+  - Primary (Directions): Solid fill `bg-hologram` text black, or `bg-accent-neon-green` text black. Sharp corners or 2px rounded.
+  - Secondary: Outline style.
 
-### 6.4 Place detail
-- Hero image or carousel (local files).
-- Story blocks: story, signatureMove, bestTime, warnings.
-- Sticky actions on mobile:
-  - Directions
-  - Open in Maps
-  - Call/Website/Instagram if available
+### 3.4 Map Interface (`MapView.tsx`)
+- **Tiles:** Use a "Dark Matter" or High-Contrast Dark map provider (CartoDB DarkMatter is ideal).
+- **Pins:** Custom DivIcons.
+  - Shape: Geometric diamonds or squares.
+  - Color: Neon based on category.
+  - "Pulse" effect css animation.
 
----
-
-## 7) Visual direction (personality without unusable chaos)
-### 7.1 Style theme
-- Dark base with renaissance-rich tones + neon accents.
-- Cyberpunk / retro-future geometry + esoteric sigils.
-- “MySpace energy” in framing and microcopy, but content remains readable.
-
-### 7.2 Typography rules
-- Two-font system max:
-  - Display font for headings
-  - Clean sans for body
-- Body minimum ~16px; line-height comfortable.
-- Avoid neon-on-neon for paragraphs; reserve neon for accents and headers.
-
-### 7.3 Motion rules
-- Allowed: page transitions, hover/press glow, subtle background drift, optional particles.
-- Must respect `prefers-reduced-motion`:
-  - disable particles
-  - reduce/disable transition motion
-- Motion must never block scrolling or reading.
+### 3.5 Place Detail (`/p/[id]`)
+- **Header:** Hero image with "glitch" load effect (optional CSS).
+- **Data Block:** Display metadata (Price, Area, Lat/Lng) in a "Technical Specs" grid.
+- **Story:** Readable sans-serif text in a dedicated container.
+- **Sticky Footer:** "Command Bar" style (solid background, distinct buttons).
 
 ---
 
-## 8) Accessibility requirements
-- Tap targets >= 44px.
-- Semantic headings and landmarks.
-- Visible focus states.
-- Alt text on images where meaningful.
-- Contrast must remain high for body text.
+## 4) Microcopy & Tone (The "System" Voice)
+The UI speaks like an Operating System, the Content speaks like a Friend.
+
+* **UI Labels:**
+    * Loading -> `LOADING_ASSETS...`
+    * Error -> `ERR::CONNECTION_LOST`
+    * Map -> `SAT_VIEW`
+    * List -> `DATA_LIST`
+    * Directions -> `INIT_ROUTE`
+    * Open in Maps -> `EXT_APP_LAUNCH`
+* **Content (JSON Data):**
+    * Remains casual, warm, human. "This burger is life-changing."
 
 ---
 
-## 9) Performance requirements
-- Optimize images (size, compression) and lazy-load below the fold.
-- Keep particle density low and disable under reduced motion.
-- Avoid giant bundles; keep dependencies minimal.
+## 5) Implementation Sequence (Refactoring Strategy)
+
+### Phase 1: Foundation (Design Tokens)
+1.  Update `tailwind.config.js` with new colors and fonts.
+2.  Add `globals.css` utilities for:
+    - `.scanlines`
+    - `.hud-border` (clip-path polygons)
+    - `.text-glow`
+3.  Update `layout.tsx` background.
+
+### Phase 2: Atoms & Molecules
+4.  Refactor `Button` component (Standard vs. Tactical).
+5.  Refactor `TagPill` (outlined, mono-font).
+6.  Refactor `CategoryTile`.
+
+### Phase 3: Layouts & Pages
+7.  Update `PlaceCard` structure.
+8.  Update `PlaceDetail` page layout (Specs Grid).
+9.  Style the Map (custom tiles + pins).
+
+### Phase 4: Polish
+10. Add "System Status" micro-animations (blinking cursors, load bars).
+11. Verify Contrast Ratios (Accessibility check).
 
 ---
 
-## 10) Component plan (minimum set)
-- `CategoryTile`
-- `PlaceCard`
-- `TagPill`
-- `MapView` (Leaflet wrapper)
-- `BottomSheet` (mobile)
-- `PlaceDetail`
-- `HeaderNav` (lightweight)
-- `ThemeBackground` (pattern/grain; lightweight)
+## 6) Data Contracts (Unchanged)
+**CRITICAL:** Do not modify the structure of `data/categories.json` or `data/places.json`.
+The UI changes are purely cosmetic/presentation layer.
+- `id`, `slug`, `lat`, `lng` remain the source of truth.
 
 ---
 
-## 11) Agent roles & responsibilities
-### 11.1 PM/Orchestrator agent
-- Enforce guardrails.
-- Keep scope tight to v1.0.
-- Define acceptance criteria for each feature.
-- Decide what to ship vs defer.
-
-### 11.2 UI/UX agent
-- Implement layout hierarchy and readable design tokens.
-- Ensure mobile navigation and thumb ergonomics.
-- Ensure “character layer” doesn’t destroy legibility.
-
-### 11.3 Frontend engineer agent
-- Implement routes, data loading, components.
-- Implement map + bottom sheet behavior.
-- Implement link-out actions reliably.
-
-### 11.4 QA agent
-- Test iOS Safari/Chrome, Android Chrome.
-- Verify reduced motion, focus states, no overlap issues.
-- Validate build-time data checks.
+## 7) Quality Assurance (Visual)
+### Verify before committing:
+- **Dark Mode only:** The site does not support "Light Mode."
+- **Contrast:** Is the grey text readable on the black background?
+- **Touch:** Are the "Tactical Buttons" still large enough (44px min-height)?
+- **Glitch:** Do CSS effects disappear when `prefers-reduced-motion: reduce` is active?
 
 ---
 
-## 12) Work plan (sequenced tasks)
-### Phase 1 — Skeleton + data
-1) Create `data/categories.json` and `data/places.json` with 5 sample places.
-2) Add `/public/places/` with sample images.
-3) Add validation script and wire to `npm run validate`.
-
-### Phase 2 — Pages
-4) Home page tiles route to categories.
-5) Category List page with PlaceCards + actions.
-6) Place detail page with sticky actions.
-
-### Phase 3 — Map toggle
-7) Add Map toggle and Leaflet pins.
-8) Bottom sheet opens on pin tap and links to detail.
-
-### Phase 4 — Polish
-9) Implement theme tokens, borders, icons, patterns, subtle animations.
-10) `prefers-reduced-motion` support.
-11) Accessibility pass and mobile testing.
-
----
-
-## 13) Testing checklist (definition of done)
-### Mobile
-- Home tiles: no overlap, readable, easy tap.
-- Category list: scroll smooth; CTAs work.
-- Map view: loads; pins tappable; bottom sheet usable.
-- Place detail: story readable; sticky actions; link-outs correct.
-- Missing optional fields do not break layout.
-
-### Accessibility
-- Reduced motion disables particles/transitions.
-- Focus states visible on desktop.
-- Contrast acceptable for body text.
-
-### Data validation
-- Invalid category slugs fail validation.
-- Missing googleMapsUrl fails validation.
-- Duplicate ids fail validation.
-
----
-
-## 14) Coding conventions
-- Prefer simple, explicit code over clever abstractions.
-- Keep data loading server-safe; avoid dynamic runtime fetch.
-- Use TypeScript types for `Category` and `Place` even if data is JSON.
-- Do not introduce large UI libraries that bloat bundles.
-
----
-
-## 15) PR / commit rules for agents
-- Keep PRs small: one feature per PR when possible.
-- Include screenshots or short GIF for major UI changes (mobile view).
-- Include notes on how to test manually.
-- Never add v1.0-excluded features “because it’s easy.”
-
----
-
-## 16) Quick commands (suggested)
-- `npm run dev`
-- `npm run build`
-- `npm run lint`
-- `npm run validate`
-- `npm run test` (optional if tests exist)
-
----
-
-## 17) “Stop conditions” (ask before proceeding)
-Agents must stop and ask (instead of guessing) if:
-- A requested change implies external APIs (hours, photos, live data).
-- A requested feature implies user accounts, DB, or CMS.
-- A requested UX implies heavy performance cost that harms mobile.
-
----
-
-## 18) Content voice constraints
-- One-liners: punchy, specific, no fluff.
-- Stories: 2–6 sentences max; “friend text” tone; no walls of text.
-- Warnings: short and factual.
-- SignatureMove: one directive (order/do/sit/arrive at).
-
-End of file.
+## 8) Stop Conditions (Ask User)
+Stop and ask if:
+- A UI element requires importing a heavy library (e.g., Three.js) to achieve the look.
+- The "Cut Corner" design breaks layout on small iPhone SE screens.
+- You are unsure if a color combination meets WCAG AA standards.

@@ -16,7 +16,7 @@ export default function PlacePage({
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 pb-32">
-      <div className="hud-meta flex flex-wrap items-center gap-4 text-[color:var(--text-muted)]">
+      <div className="hud-meta flex flex-wrap items-center gap-4 text-[color:var(--text-dim)]">
         <Link className="hover:text-[color:var(--color-cyan)]" href="/">
           // Home
         </Link>
