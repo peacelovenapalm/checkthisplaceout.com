@@ -39,7 +39,7 @@ export default function BottomSheet({
         role="dialog"
         aria-modal="false"
         aria-label={title || "Map details"}
-        className="panel relative mx-4 mb-4 w-full max-w-md overflow-auto border-2 border-[color:var(--border-color)] sm:mb-0 sm:max-h-[70vh]"
+        className="panel relative mx-4 mb-4 w-full max-w-md overflow-auto border border-[color:var(--border-color)] sm:mb-0 sm:max-h-[70vh]"
       >
         <div className="window-bar">
           <span className="window-title">Selected</span>

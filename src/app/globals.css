@@ -109,6 +109,29 @@ img {
   }
 }
 
+@keyframes heroGlitch {
+  0% {
+    transform: translate3d(0, 0, 0);
+    filter: contrast(1.25) saturate(1.15);
+  }
+  20% {
+    transform: translate3d(-2px, 0, 0);
+    filter: contrast(1.4) hue-rotate(6deg);
+  }
+  40% {
+    transform: translate3d(2px, -1px, 0);
+    filter: contrast(1.2) saturate(1.1);
+  }
+  60% {
+    transform: translate3d(-1px, 1px, 0);
+    filter: contrast(1.35) hue-rotate(-6deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    filter: contrast(1.15) saturate(1.1);
+  }
+}
+
 @keyframes radarPulse {
   0% {
     transform: scale(0.6);
@@ -194,66 +217,80 @@ img {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border: 1px solid transparent;
-    padding: 0.55rem 1rem;
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1rem;
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.24em;
+    border-radius: 2px;
+    background: transparent;
+    transition: transform 120ms ease-out,
+      box-shadow 120ms ease-out,
+      background-color 120ms ease-out,
+      color 120ms ease-out,
+      border-color 120ms ease-out;
+  }
+
+  .btn-base {
+    background: rgba(10, 15, 20, 0.6);
+    color: var(--text-muted);
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    position: relative;
     clip-path: polygon(
-      var(--chamfer) 0,
-      100% 0,
-      100% calc(100% - var(--chamfer)),
-      calc(100% - var(--chamfer)) 100%,
-      0 100%,
-      0 var(--chamfer)
+      var(--chamfer-sm) 0,
+      calc(100% - var(--chamfer-sm)) 0,
+      100% var(--chamfer-sm),
+      100% calc(100% - var(--chamfer-sm)),
+      calc(100% - var(--chamfer-sm)) 100%,
+      var(--chamfer-sm) 100%,
+      0 calc(100% - var(--chamfer-sm)),
+      0 var(--chamfer-sm)
     );
-    transition: transform 120ms steps(2, end),
-      filter 120ms steps(2, end),
-      background-color 120ms steps(2, end),
-      color 120ms steps(2, end),
-      border-color 120ms steps(2, end);
   }
 
   .btn-base:active,
   .btn-primary:active,
   .btn-secondary:active,
   .btn-ghost:active {
-    transform: translate(2px, 2px);
-    filter: none;
-    border-width: 2px;
+    transform: translate(1px, 1px);
   }
 
   .btn-primary {
-    background: var(--color-cyan);
-    color: #050507;
-    border-color: var(--color-cyan);
-    filter: drop-shadow(4px 4px 0 var(--color-cyan));
+    background: var(--accent-cutrun-orange);
+    color: var(--bg-terminal-black);
+    border-color: var(--accent-cutrun-orange);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 12px rgba(255, 95, 0, 0.35);
   }
 
   .btn-secondary {
-    background: transparent;
-    color: var(--color-cyan);
-    border-color: var(--color-cyan);
-    filter: drop-shadow(4px 4px 0 var(--color-cyan));
+    background: rgba(0, 240, 255, 0.08);
+    color: var(--accent-cyber-cyan);
+    border-color: var(--accent-cyber-cyan);
   }
 
   .btn-secondary:hover {
-    background: var(--color-cyan);
-    color: #050507;
+    background: var(--accent-cyber-cyan);
+    color: var(--bg-terminal-black);
   }
 
   .btn-ghost {
-    background: transparent;
-    color: var(--text-body);
+    background: rgba(5, 5, 5, 0.4);
+    color: var(--text-hologram);
     border-color: var(--border-color);
-    filter: drop-shadow(4px 4px 0 var(--border-color));
   }
 
   .btn-ghost:hover {
-    border-color: var(--color-violet);
-    color: var(--color-violet);
+    border-color: var(--accent-electric-violet);
+    color: var(--accent-electric-violet);
   }
 
   .tag-pill {
@@ -262,46 +299,127 @@ img {
     justify-content: center;
     gap: 0.4rem;
     padding: 0.25rem 0.5rem;
-    background: var(--color-cyan);
-    color: #050507;
-    border: 1px solid var(--color-cyan);
+    background: rgba(188, 19, 254, 0.08);
+    color: var(--accent-electric-violet);
+    border: 1px solid var(--accent-electric-violet);
     font-family: var(--font-mono);
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.22em;
     font-weight: 500;
+    border-radius: 2px;
+  }
+
+  .data-cartridge {
+    border: 1px solid var(--border-color);
+    background: var(--bg-terminal-dark);
     clip-path: polygon(
-      var(--chamfer-sm) 0,
-      100% 0,
-      100% calc(100% - var(--chamfer-sm)),
-      calc(100% - var(--chamfer-sm)) 100%,
-      0 100%,
-      0 var(--chamfer-sm)
+      var(--hud-corner) 0,
+      calc(100% - var(--hud-corner)) 0,
+      100% var(--hud-corner),
+      100% calc(100% - var(--hud-corner)),
+      calc(100% - var(--hud-corner)) 100%,
+      var(--hud-corner) 100%,
+      0 calc(100% - var(--hud-corner)),
+      0 var(--hud-corner)
     );
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+    transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+  }
+
+  .data-cartridge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      120deg,
+      rgba(0, 240, 255, 0.12),
+      transparent 40%,
+      rgba(188, 19, 254, 0.12)
+    );
+    opacity: 0;
+    transition: opacity 160ms ease-out;
+    pointer-events: none;
+  }
+
+  .data-cartridge > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .data-cartridge:hover {
+    border-color: var(--accent-cutrun-orange);
+    box-shadow: 0 0 18px rgba(255, 95, 0, 0.2);
+  }
+
+  .data-cartridge:hover::after {
+    opacity: 1;
+  }
+
+  .data-cartridge__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background: var(--bg-terminal-black);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .data-cartridge__title {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.85rem;
+    color: var(--text-body);
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .data-cartridge__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .data-cartridge__count {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    color: var(--accent-acid-yellow);
+    border: 1px solid var(--accent-acid-yellow);
+    padding: 0.12rem 0.4rem;
   }
 
   .place-card {
-    border: 2px solid var(--border-color);
-    background: var(--bg-terminal);
+    border: 1px solid var(--border-color);
+    background: var(--bg-terminal-dark);
     clip-path: polygon(
-      var(--chamfer) 0,
-      100% 0,
-      100% calc(100% - var(--chamfer)),
-      calc(100% - var(--chamfer)) 100%,
-      0 100%,
-      0 var(--chamfer)
+      var(--hud-corner) 0,
+      calc(100% - var(--hud-corner)) 0,
+      100% var(--hud-corner),
+      100% calc(100% - var(--hud-corner)),
+      calc(100% - var(--hud-corner)) 100%,
+      var(--hud-corner) 100%,
+      0 calc(100% - var(--hud-corner)),
+      0 var(--hud-corner)
     );
-    filter: drop-shadow(6px 6px 0 var(--shadow-ink));
     overflow: hidden;
-    transition: transform 120ms steps(2, end),
-      border-color 120ms steps(2, end),
-      filter 120ms steps(2, end);
+    transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
   }
 
   .place-card:hover {
-    border-color: var(--color-cyan);
-    transform: translateX(-2px);
-    filter: drop-shadow(6px 6px 0 var(--color-cyan));
+    border-color: var(--accent-neon-green);
+    box-shadow: 0 0 18px rgba(255, 95, 0, 0.18);
   }
 
   .window-bar {
@@ -309,9 +427,9 @@ img {
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    background: var(--bg-hud);
-    border-bottom: 1px solid var(--bg-void);
-    padding: 0.45rem 0.75rem;
+    background: var(--bg-terminal-black);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
     font-family: var(--font-mono);
     text-transform: uppercase;
     letter-spacing: 0.22em;
@@ -360,6 +478,10 @@ img {
     filter: contrast(1.2) grayscale(0.18) saturate(1.1);
     transition: transform 120ms steps(2, end),
       filter 120ms steps(2, end);
+  }
+
+  .hero-glitch {
+    animation: heroGlitch 0.6s steps(2, end) 1;
   }
 
   .image-glitch:hover,
@@ -438,17 +560,18 @@ img {
   }
 
   .map-shell {
-    border: 2px solid var(--border-color);
-    background: var(--bg-terminal);
+    border: 1px solid var(--border-color);
+    background: var(--bg-terminal-dark);
     clip-path: polygon(
-      var(--chamfer) 0,
-      100% 0,
-      100% calc(100% - var(--chamfer)),
-      calc(100% - var(--chamfer)) 100%,
-      0 100%,
-      0 var(--chamfer)
+      var(--hud-corner) 0,
+      calc(100% - var(--hud-corner)) 0,
+      100% var(--hud-corner),
+      100% calc(100% - var(--hud-corner)),
+      calc(100% - var(--hud-corner)) 100%,
+      var(--hud-corner) 100%,
+      0 calc(100% - var(--hud-corner)),
+      0 var(--hud-corner)
     );
-    filter: drop-shadow(6px 6px 0 var(--shadow-ink));
     overflow: hidden;
   }
 
@@ -464,11 +587,21 @@ img {
     border: none;
   }
 
+  .ctpo-marker__shell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    --marker-stroke: var(--accent-cyber-cyan);
+    --marker-fill: rgba(0, 240, 255, 0.2);
+    --marker-core: rgba(0, 240, 255, 0.7);
+    --marker-pulse: rgba(0, 240, 255, 0.6);
+  }
+
   .ctpo-marker__icon {
     position: absolute;
     inset: 0;
-    border: 2px solid var(--color-cyan);
-    background: rgba(0, 255, 194, 0.2);
+    border: 2px solid var(--marker-stroke);
+    background: var(--marker-fill);
     transform: rotate(45deg);
   }
 
@@ -476,24 +609,19 @@ img {
     content: "";
     position: absolute;
     inset: 4px;
-    border: 1px solid var(--color-cyan);
-    background: rgba(0, 255, 194, 0.65);
-  }
-
-  .ctpo-marker.is-active .ctpo-marker__icon {
-    border-color: var(--color-violet);
-    background: rgba(189, 0, 255, 0.25);
+    border: 1px solid var(--marker-stroke);
+    background: var(--marker-core);
   }
 
   .ctpo-marker__pulse {
     position: absolute;
     inset: -12px;
-    border: 1px solid var(--color-violet);
+    border: 1px solid var(--marker-pulse);
     border-radius: 999px;
     opacity: 0;
   }
 
-  .ctpo-marker.is-active .ctpo-marker__pulse {
+  .ctpo-marker__shell.is-active .ctpo-marker__pulse {
     animation: radarPulse 1.6s ease-out infinite;
     opacity: 1;
   }
@@ -525,7 +653,7 @@ img {
   }
 
   .leaflet-control-attribution {
-    background: rgba(10, 10, 12, 0.75);
+    background: rgba(5, 5, 5, 0.75);
     color: var(--text-muted);
     border: 1px solid var(--border-color);
     border-radius: 0;
@@ -571,6 +699,39 @@ img {
   }
 }
 
+@media (max-width: 420px) {
+  .btn-base,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    padding: 0.55rem 0.8rem;
+  }
+
+  .data-cartridge__bar {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .data-cartridge__title {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+  }
+
+  .data-cartridge__meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .data-cartridge__count {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    padding: 0.1rem 0.32rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -585,7 +746,11 @@ img {
     animation: none;
   }
 
-  .ctpo-marker.is-active .ctpo-marker__pulse {
+  .hero-glitch {
+    animation: none;
+  }
+
+  .ctpo-marker__shell.is-active .ctpo-marker__pulse {
     animation: none;
   }
 

@@ -38,7 +38,7 @@ export default function CategoryExplorer({
             aria-hidden="true"
             unoptimized
           />
-          <span className="hud-label">View</span>
+          <span className="hud-label">View mode</span>
         </div>
         <div
           className="flex items-center gap-2 border border-[color:var(--border-color)] bg-[color:var(--bg-terminal)] p-1"
@@ -52,11 +52,11 @@ export default function CategoryExplorer({
             onClick={() => setView("list")}
             className={`btn-base px-3 py-1 text-[10px] ${
               view === "list"
-                ? "bg-[color:var(--color-cyan)] text-[#050507]"
-                : "text-[color:var(--text-muted)]"
+                ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+                : "text-[color:var(--text-dim)]"
             }`}
           >
-            List
+            DATA_LIST
           </button>
           <button
             type="button"
@@ -65,11 +65,11 @@ export default function CategoryExplorer({
             onClick={() => setView("map")}
             className={`btn-base px-3 py-1 text-[10px] ${
               view === "map"
-                ? "bg-[color:var(--color-cyan)] text-[#050507]"
-                : "text-[color:var(--text-muted)]"
+                ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+                : "text-[color:var(--text-dim)]"
             }`}
           >
-            Map
+            SAT_VIEW
           </button>
         </div>
       </div>
@@ -87,8 +87,8 @@ export default function CategoryExplorer({
             selectedId={selectedId}
             onSelect={(placeId) => setSelectedId(placeId)}
           />
-          <p className="hud-meta text-[color:var(--text-muted)]">
-            // Tap a pin to open quick actions.
+          <p className="hud-meta text-[color:var(--text-dim)]">
+            // TAP PIN FOR QUICK_ACTIONS
           </p>
           <BottomSheet
             isOpen={Boolean(selected)}
@@ -106,8 +106,9 @@ export default function CategoryExplorer({
                     href={selected.links.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Directions"
                   >
-                    Directions
+                    INIT_ROUTE
                   </a>
                   {mapsSecondary && (
                     <a
@@ -115,12 +116,13 @@ export default function CategoryExplorer({
                       href={mapsSecondary}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="Open in Maps"
                     >
-                      Open in Maps
+                      EXT_APP_LAUNCH
                     </a>
                   )}
                   <Link className="btn-ghost" href={`/p/${selected.id}`}>
-                    Details
+                    OPEN_FILE
                   </Link>
                 </div>
               </div>

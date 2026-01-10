@@ -1,26 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getPlacesByCategory } from "@/lib/data";
 import type { Category } from "@/lib/types";
 
 export default function CategoryTile({ category }: { category: Category }) {
+  const slotIndex = String(category.order).padStart(2, "0");
+  const itemCount = getPlacesByCategory(category.slug).length;
+  const itemCountLabel = String(itemCount).padStart(2, "0");
+
   return (
     <Link
       href={`/c/${category.slug}`}
-      className="group place-card flex min-h-[160px] flex-col"
+      className="group data-cartridge flex min-h-[170px] flex-col"
     >
-      <div className="window-bar">
-        <span className="window-title">{category.title}</span>
-        <span className="hud-meta text-[color:var(--text-muted)]">
-          // SLOT {String(category.order).padStart(2, "0")}
+      <div className="data-cartridge__bar">
+        <span className="data-cartridge__title group-hover:text-[color:var(--accent-cutrun-orange)] group-hover:text-glow">
+          {category.title}
         </span>
+        <div className="data-cartridge__meta">
+          <span className="hud-meta text-[color:var(--text-dim)]">
+            SLOT {slotIndex}
+          </span>
+          <span className="data-cartridge__count">[{itemCountLabel}]</span>
+        </div>
       </div>
-      <div className="flex flex-1 flex-col gap-5 p-5">
-        <p className="text-base text-[color:var(--text-body)]">
+      <div className="flex flex-1 flex-col gap-4 p-5">
+        <p className="text-sm text-[color:var(--text-hologram)]">
           {category.caption}
         </p>
         <div className="mt-auto flex items-center justify-between gap-4">
-          <span className="hud-label">Enter</span>
-          <div className="flex h-12 w-12 items-center justify-center border border-[color:var(--border-color)] bg-[color:var(--bg-hud)]">
+          <div className="flex flex-col gap-1">
+            <span className="hud-label text-[color:var(--accent-electric-cyan)]">
+              DATA_CART
+            </span>
+            <span className="hud-meta text-[color:var(--text-dim)]">READY</span>
+          </div>
+          <div className="hud-border flex h-12 w-12 items-center justify-center border border-[color:var(--border-color)] bg-[color:var(--bg-terminal-black)]">
             <Image
               src={category.icon}
               alt={`${category.title} icon`}
