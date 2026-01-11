@@ -1,12 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getPlacesByCategory } from "@/lib/data";
 import type { Category } from "@/lib/types";
 
-export default function CategoryTile({ category }: { category: Category }) {
+export default function CategoryTile({
+  category,
+  count
+}: {
+  category: Category;
+  count: number;
+}) {
   const slotIndex = String(category.order).padStart(2, "0");
-  const itemCount = getPlacesByCategory(category.slug).length;
-  const itemCountLabel = String(itemCount).padStart(2, "0");
+  const itemCountLabel = String(count).padStart(2, "0");
 
   return (
     <Link

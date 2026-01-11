@@ -10,6 +10,8 @@
     "validate": "node scripts/validate-data.js"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.49.1",
     "framer-motion": "^11.0.0",
     "leaflet": "^1.9.4",
     "next": "^16.1.1",

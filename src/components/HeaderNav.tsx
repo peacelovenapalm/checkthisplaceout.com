@@ -20,7 +20,7 @@ export default function HeaderNav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-10">
         <Link href="/" className="flex items-center gap-3">
           <span className="hud-meta text-[color:var(--color-yellow)]">
-            // LV-OPS
+            {"// LV-OPS"}
           </span>
           <span className="display-title text-base tracking-[0.18em] text-[color:var(--text-hologram)] sm:text-lg">
             CHECKTHISPLACEOUT
@@ -36,7 +36,7 @@ export default function HeaderNav() {
           </div>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs">
             <span className="hud-meta text-[color:var(--text-dim)]">
-              // {pageLabel}
+              {`// ${pageLabel}`}
             </span>
             <span className="cursor-block" aria-hidden="true" />
           </div>

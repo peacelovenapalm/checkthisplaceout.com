@@ -11,9 +11,12 @@ export default function PageFlash() {
 
   useEffect(() => {
     if (reduceMotion) return;
-    setActive(true);
+    const raf = window.requestAnimationFrame(() => setActive(true));
     const timeout = window.setTimeout(() => setActive(false), 50);
-    return () => window.clearTimeout(timeout);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(timeout);
+    };
   }, [pathname, reduceMotion]);
 
   return (

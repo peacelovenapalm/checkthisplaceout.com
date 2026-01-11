@@ -40,10 +40,10 @@ export default function PlaceDetail({ place }: { place: Place }) {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
             <span className="hud-meta text-[color:var(--text-dim)]">
-              // FILE_ID: {place.id}
+              {`// FILE_ID: ${place.id}`}
             </span>
             <span className="hud-meta text-[color:var(--accent-electric-cyan)]">
-              // ZONE: {place.area}
+              {`// ZONE: ${place.area}`}
             </span>
             {place.price && (
               <span className="border border-[color:var(--accent-radical-red)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-radical-red)]">
@@ -84,7 +84,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
       <section className="panel flex flex-col gap-6 border border-[color:var(--border-color)] p-5 text-base">
         <div>
           <p className="hud-meta text-[color:var(--text-dim)]">
-            // FRIEND_TEXT
+            {"// FRIEND_TEXT"}
           </p>
           <h2 className="display-title text-lg text-[color:var(--accent-electric-cyan)]">
             Field notes
@@ -129,7 +129,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
 
       <section className="space-y-3">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          // TECHNICAL_SPECS
+          {"// TECHNICAL_SPECS"}
         </p>
         <div className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
           <div className="panel-muted flex flex-col gap-2 p-4">
@@ -166,7 +166,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
       <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[color:var(--border-color)] bg-[rgba(5,5,5,0.96)] px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-4 backdrop-blur md:static md:border md:border-[color:var(--border-color)] md:bg-[color:var(--bg-terminal)] md:p-4">
         <div className="mx-auto flex max-w-3xl flex-col gap-3">
           <p className="hud-meta text-[color:var(--text-dim)]">
-            // COMMAND_BAR
+            {"// COMMAND_BAR"}
           </p>
           <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center">
             <a

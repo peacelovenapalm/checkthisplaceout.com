@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from "react";
+import { LeafletProvider, createLeafletContext } from "@react-leaflet/core";
+import { Marker, TileLayer, useMap, type MapContainerProps } from "react-leaflet";
 import L from "leaflet";
 import type { Place } from "@/lib/types";
 
@@ -31,6 +38,85 @@ const CATEGORY_COLOR_MAP: Record<string, string> = {
 };
 const DEFAULT_MARKER_COLOR = "#00F0FF";
 const MARKER_SIZE = 18;
+const markerIconCache = new Map<string, L.DivIcon>();
+
+const StableMapContainer = forwardRef<L.Map, MapContainerProps>(
+  (
+    {
+      bounds,
+      boundsOptions,
+      center,
+      children,
+      className,
+      id,
+      placeholder,
+      style,
+      whenReady,
+      zoom,
+      ...options
+    },
+    forwardedRef
+  ) => {
+    const [containerProps] = useState(() => ({ className, id, style }));
+    const [initial] = useState(() => ({
+      bounds,
+      boundsOptions,
+      center,
+      zoom,
+      whenReady,
+      options
+    }));
+    const [context, setContext] = useState<
+      ReturnType<typeof createLeafletContext> | null
+    >(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const mapRef = useRef<L.Map | null>(null);
+
+    useImperativeHandle(forwardedRef, () => mapRef.current, [context]);
+
+    useEffect(() => {
+      const container = containerRef.current;
+      if (!container || mapRef.current) return;
+
+      // Guard against StrictMode / Fast Refresh re-init on the same DOM node.
+      if ("_leaflet_id" in container) {
+        delete (container as { _leaflet_id?: number })._leaflet_id;
+      }
+
+      const map = L.map(container, initial.options);
+      mapRef.current = map;
+
+      if (initial.center != null && initial.zoom != null) {
+        map.setView(initial.center, initial.zoom);
+      } else if (initial.bounds != null) {
+        map.fitBounds(initial.bounds, initial.boundsOptions);
+      }
+
+      if (initial.whenReady != null) {
+        map.whenReady(initial.whenReady);
+      }
+
+      setContext(createLeafletContext(map));
+
+      return () => {
+        map.remove();
+        mapRef.current = null;
+      };
+    }, [initial]);
+
+    const contents = context ? (
+      <LeafletProvider value={context}>{children}</LeafletProvider>
+    ) : (
+      placeholder ?? null
+    );
+
+    return (
+      <div {...containerProps} ref={containerRef}>
+        {contents}
+      </div>
+    );
+  }
+);
 
 const hexToRgb = (hex: string) => {
   const normalized = hex.replace("#", "");
@@ -79,7 +165,6 @@ function FitBounds({ places }: { places: Place[] }) {
 
 export default function MapView({ places, selectedId, onSelect }: MapViewProps) {
   const selected = places.find((place) => place.id === selectedId);
-  const markerIconCache = useMemo(() => new Map<string, L.DivIcon>(), []);
 
   const getMarkerIcon = (place: Place, isActive: boolean) => {
     const category = place.categories[0];
@@ -103,7 +188,7 @@ export default function MapView({ places, selectedId, onSelect }: MapViewProps) 
 
   return (
     <div className="map-shell">
-      <MapContainer
+      <StableMapContainer
         className="map-canvas h-[65vh] w-full"
         center={selected ? [selected.lat, selected.lng] : [36.1699, -115.1398]}
         zoom={13}
@@ -124,7 +209,7 @@ export default function MapView({ places, selectedId, onSelect }: MapViewProps) 
             }}
           />
         ))}
-      </MapContainer>
+      </StableMapContainer>
     </div>
   );
 }

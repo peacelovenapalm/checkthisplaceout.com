@@ -88,7 +88,7 @@ export default function CategoryExplorer({
             onSelect={(placeId) => setSelectedId(placeId)}
           />
           <p className="hud-meta text-[color:var(--text-dim)]">
-            // TAP PIN FOR QUICK_ACTIONS
+            {"// TAP PIN FOR QUICK_ACTIONS"}
           </p>
           <BottomSheet
             isOpen={Boolean(selected)}

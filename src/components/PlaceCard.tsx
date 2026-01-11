@@ -34,7 +34,7 @@ export default function PlaceCard({ place }: { place: Place }) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-2">
             <p className="hud-meta text-[color:var(--text-dim)]">
-              // FILE_ID: {place.id}
+              {`// FILE_ID: ${place.id}`}
             </p>
             <h3 className="display-title text-lg text-[color:var(--text-hologram)] sm:text-xl">
               {place.name}
@@ -42,7 +42,7 @@ export default function PlaceCard({ place }: { place: Place }) {
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
             <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[color:var(--accent-electric-cyan)]">
-              // ZONE: {place.area}
+              {`// ZONE: ${place.area}`}
             </span>
             {place.price ? (
               <span className="border border-[color:var(--accent-radical-red)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-radical-red)]">
@@ -79,7 +79,7 @@ export default function PlaceCard({ place }: { place: Place }) {
 
             <div>
               <p className="hud-meta text-[color:var(--text-dim)]">
-                // TACTICAL_INPUTS
+                {"// TACTICAL_INPUTS"}
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <a
@@ -111,7 +111,7 @@ export default function PlaceCard({ place }: { place: Place }) {
               phoneHref) && (
               <div className="space-y-2">
                 <p className="hud-meta text-[color:var(--text-dim)]">
-                  // EXTERNAL_LINKS
+                  {"// EXTERNAL_LINKS"}
                 </p>
                 <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-[0.3em] text-[color:var(--text-dim)]">
                   {place.links.instagramUrl && (
