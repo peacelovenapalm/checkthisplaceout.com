@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { copy } from "@/lib/copy";
 import type { Category } from "@/lib/types";
 
 export default function CategoryTile({
@@ -23,7 +24,7 @@ export default function CategoryTile({
         </span>
         <div className="data-cartridge__meta">
           <span className="hud-meta text-[color:var(--text-dim)]">
-            SLOT {slotIndex}
+            {copy.categoryTile.slot} {slotIndex}
           </span>
           <span className="data-cartridge__count">[{itemCountLabel}]</span>
         </div>
@@ -35,9 +36,11 @@ export default function CategoryTile({
         <div className="mt-auto flex items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <span className="hud-label text-[color:var(--accent-electric-cyan)]">
-              DATA_CART
+              {copy.categoryTile.status}
             </span>
-            <span className="hud-meta text-[color:var(--text-dim)]">READY</span>
+            <span className="hud-meta text-[color:var(--text-dim)]">
+              {copy.categoryTile.ready}
+            </span>
           </div>
           <div className="hud-border flex h-12 w-12 items-center justify-center border border-[color:var(--border-color)] bg-[color:var(--bg-terminal-black)]">
             <Image

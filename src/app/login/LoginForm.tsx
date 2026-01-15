@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { signIn } from "@/lib/actions/auth";
+import { copy } from "@/lib/copy";
 
 const initialState = { error: undefined };
 
@@ -9,7 +10,7 @@ const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
     <button type="submit" className="btn-primary w-full" disabled={pending}>
-      {pending ? "CONNECTING..." : "SIGN_IN"}
+      {pending ? copy.system.loading : copy.buttons.signIn}
     </button>
   );
 };

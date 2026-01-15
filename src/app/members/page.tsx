@@ -1,5 +1,7 @@
 import MemberManagement from "@/components/MemberManagement";
+import MembersAdminPanel from "@/components/MembersAdminPanel";
 import NotInvited from "@/components/NotInvited";
+import { copy } from "@/lib/copy";
 import { requireActiveProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
@@ -21,13 +23,13 @@ export default async function MembersPage({
     return (
       <div className="panel flex flex-col gap-3 border border-[color:var(--border-color)] p-6">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          {"// ACCESS_DENIED"}
+          {copy.brand.tagline}
         </p>
         <h1 className="display-title text-2xl text-[color:var(--text-hologram)]">
-          Admin access required.
+          {copy.errors.notAllowedTitle}
         </h1>
         <p className="text-sm text-[color:var(--text-dim)]">
-          Ask an admin to grant access to member management.
+          {copy.errors.notAllowedBody}
         </p>
       </div>
     );
@@ -43,15 +45,18 @@ export default async function MembersPage({
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
       <section className="panel flex flex-col gap-3 border border-[color:var(--border-color)] p-6">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          {"// MEMBERS"}
+          {copy.members.title}
         </p>
         <h1 className="display-title text-2xl text-[color:var(--text-hologram)]">
-          Manage bartender access
+          {copy.members.title}
         </h1>
-        <p className="text-sm text-[color:var(--text-dim)]">
-          Toggle active status or role for invited accounts.
-        </p>
+        <div className="space-y-1 text-sm text-[color:var(--text-dim)]">
+          <p>{copy.members.helper}</p>
+          {copy.members.helperNote && <p>{copy.members.helperNote}</p>}
+        </div>
       </section>
+
+      <MembersAdminPanel />
 
       {searchParams?.error && (
         <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,60,0.1)] p-4 text-sm text-[color:var(--color-red)]">

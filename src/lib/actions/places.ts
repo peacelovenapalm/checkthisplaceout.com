@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { copy } from "@/lib/copy";
 import { getActionProfile } from "@/lib/actions/guards";
 import type { SupabaseServerClient } from "@/lib/supabase/server";
 import type { PlaceStatus, Price } from "@/lib/types";
@@ -128,22 +129,17 @@ const buildPayload = (formData: FormData) => {
 };
 
 const validateForSubmit = (payload: ReturnType<typeof buildPayload>) => {
-  if (!payload.title) return "Title is required before submitting.";
-  if (!payload.area) return "Area is required before submitting.";
-  if (!payload.categories.length)
-    return "Select at least one category before submitting.";
-  if (!payload.vibes.length)
-    return "Add at least one vibe before submitting.";
-  if (!payload.description_short)
-    return "One-liner is required before submitting.";
-  if (!payload.story) return "Story is required before submitting.";
-  if (!payload.signature_move)
-    return "Signature move is required before submitting.";
-  if (!payload.best_time) return "Best time is required before submitting.";
-  if (!payload.links.googleMapsUrl)
-    return "Google Maps URL is required before submitting.";
+  if (!payload.title) return copy.form.validation.required;
+  if (!payload.area) return copy.form.validation.required;
+  if (!payload.categories.length) return copy.form.validation.required;
+  if (!payload.vibes.length) return copy.form.validation.required;
+  if (!payload.description_short) return copy.form.validation.required;
+  if (!payload.story) return copy.form.validation.required;
+  if (!payload.signature_move) return copy.form.validation.required;
+  if (!payload.best_time) return copy.form.validation.required;
+  if (!payload.links.googleMapsUrl) return copy.form.validation.required;
   if (payload.lat === null || payload.lng === null)
-    return "Latitude and longitude are required before submitting.";
+    return copy.form.validation.required;
   return null;
 };
 
@@ -173,10 +169,10 @@ export const upsertPlace = async (
 
     if (!placeId) {
       if (!payload.title) {
-        return { error: "Title is required to create a draft." };
+        return { error: copy.form.validation.required };
       }
       if (isSubmit) {
-        return { error: "Save the draft before submitting." };
+        return { error: copy.form.validation.saveDraftFirst };
       }
 
       const baseSlug = slugify(payload.title) || "place";

@@ -1,4 +1,5 @@
 import { castVote } from "@/lib/actions/votes";
+import { copy } from "@/lib/copy";
 
 export default function VoteControls({
   placeId,
@@ -10,7 +11,7 @@ export default function VoteControls({
   if (disabled) {
     return (
       <p className="hud-meta text-[color:var(--text-dim)]">
-        {"// VOTE_LOCKED"}
+        {copy.review.voteLocked}
       </p>
     );
   }
@@ -21,14 +22,14 @@ export default function VoteControls({
         <input type="hidden" name="placeId" value={placeId} />
         <input type="hidden" name="vote" value="yes" />
         <button type="submit" className="btn-primary">
-          YES
+          {copy.cta.approve}
         </button>
       </form>
       <form action={castVote}>
         <input type="hidden" name="placeId" value={placeId} />
         <input type="hidden" name="vote" value="no" />
         <button type="submit" className="btn-secondary">
-          NO
+          {copy.cta.reject}
         </button>
       </form>
     </div>

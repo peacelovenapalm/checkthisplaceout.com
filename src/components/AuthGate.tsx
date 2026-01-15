@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import NotInvited from "@/components/NotInvited";
+import { copy } from "@/lib/copy";
 import { requireActiveProfile } from "@/lib/auth";
 
 export default async function AuthGate({
@@ -19,13 +20,13 @@ export default async function AuthGate({
     return (
       <div className="panel flex flex-col gap-3 border border-[color:var(--border-color)] p-6 sm:p-8">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          {"// ACCESS_DENIED"}
+          {copy.brand.tagline}
         </p>
         <h1 className="display-title text-2xl text-[color:var(--text-hologram)] md:text-3xl">
-          Admin access required.
+          {copy.errors.notAllowedTitle}
         </h1>
         <p className="text-sm text-[color:var(--text-dim)]">
-          Ask an admin to grant access to member management.
+          {copy.errors.notAllowedBody}
         </p>
       </div>
     );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
+import { copy } from "@/lib/copy";
 import type { Category, PlaceRecord } from "@/lib/types";
 import { upsertPlace } from "@/lib/actions/places";
 
@@ -22,7 +23,7 @@ const SubmitButton = ({
       className={intent === "submit" ? "btn-primary" : "btn-secondary"}
       disabled={pending}
     >
-      {pending ? "WORKING..." : label}
+      {pending ? copy.system.loading : label}
     </button>
   );
 };
@@ -48,14 +49,17 @@ export default function PlaceForm({
       <section className="panel flex flex-col gap-4 border border-[color:var(--border-color)] p-5">
         <div className="flex items-center justify-between gap-4">
           <h2 className="display-title text-lg text-[color:var(--text-hologram)]">
-            Basics
+            {copy.form.basicsTitle}
           </h2>
           <span className="hud-meta text-[color:var(--text-dim)]">
-            {"// REQUIRED"}
+            {copy.form.requiredLabel}
           </span>
         </div>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Title</span>
+          <span className="hud-label">{copy.form.titleLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.titleHelper}
+          </span>
           <input
             name="title"
             defaultValue={place?.title ?? ""}
@@ -64,7 +68,10 @@ export default function PlaceForm({
           />
         </label>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Area</span>
+          <span className="hud-label">{copy.form.areaLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.areaHelper}
+          </span>
           <input
             name="area"
             defaultValue={place?.area ?? ""}
@@ -73,7 +80,10 @@ export default function PlaceForm({
           />
         </label>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">One-liner</span>
+          <span className="hud-label">{copy.form.oneLinerLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.oneLinerHelper}
+          </span>
           <input
             name="description_short"
             defaultValue={place?.description_short ?? ""}
@@ -82,7 +92,10 @@ export default function PlaceForm({
           />
         </label>
         <div className="space-y-3">
-          <span className="hud-label">Categories</span>
+          <span className="hud-label">{copy.form.categoriesLabel}</span>
+          <p className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.categoriesHelper}
+          </p>
           <div className="grid gap-2 sm:grid-cols-2">
             {categories.map((category) => (
               <label
@@ -102,7 +115,10 @@ export default function PlaceForm({
           </div>
         </div>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Vibes (comma separated)</span>
+          <span className="hud-label">{copy.form.vibesLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.vibesHelper}
+          </span>
           <input
             name="vibes"
             defaultValue={vibes}
@@ -111,7 +127,10 @@ export default function PlaceForm({
           />
         </label>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Price</span>
+          <span className="hud-label">{copy.form.priceLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.priceHelper}
+          </span>
           <select
             name="price"
             defaultValue={place?.price ?? ""}
@@ -128,15 +147,15 @@ export default function PlaceForm({
       <section className="panel flex flex-col gap-4 border border-[color:var(--border-color)] p-5">
         <div className="flex items-center justify-between gap-4">
           <h2 className="display-title text-lg text-[color:var(--text-hologram)]">
-            Location
+            {copy.form.locationTitle}
           </h2>
           <span className="hud-meta text-[color:var(--text-dim)]">
-            {"// COORDINATES"}
+            {copy.form.coordinatesLabel}
           </span>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm">
-            <span className="hud-label">Latitude</span>
+            <span className="hud-label">{copy.form.latitudeLabel}</span>
             <input
               type="number"
               step="any"
@@ -147,7 +166,7 @@ export default function PlaceForm({
             />
           </label>
           <label className="space-y-2 text-sm">
-            <span className="hud-label">Longitude</span>
+            <span className="hud-label">{copy.form.longitudeLabel}</span>
             <input
               type="number"
               step="any"
@@ -163,24 +182,30 @@ export default function PlaceForm({
       <section className="panel flex flex-col gap-4 border border-[color:var(--border-color)] p-5">
         <div className="flex items-center justify-between gap-4">
           <h2 className="display-title text-lg text-[color:var(--text-hologram)]">
-            Story
+            {copy.form.storyTitle}
           </h2>
           <span className="hud-meta text-[color:var(--text-dim)]">
-            {"// FRIEND_TEXT"}
+            {copy.form.notesLabel}
           </span>
         </div>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Story</span>
+          <span className="hud-label">{copy.form.storyLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.storyHelper}
+          </span>
           <textarea
             name="story"
             defaultValue={place?.story ?? ""}
             className="min-h-[140px] w-full border border-[color:var(--border-color)] bg-[color:var(--bg-terminal-black)] px-3 py-2 text-[color:var(--text-hologram)]"
-            placeholder="Two to six sentences."
+            placeholder="Short and clear."
           />
         </label>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm">
-            <span className="hud-label">Signature move</span>
+            <span className="hud-label">{copy.form.signatureMoveLabel}</span>
+            <span className="text-xs text-[color:var(--text-dim)]">
+              {copy.form.signatureMoveHelper}
+            </span>
             <input
               name="signature_move"
               defaultValue={place?.signature_move ?? ""}
@@ -189,7 +214,10 @@ export default function PlaceForm({
             />
           </label>
           <label className="space-y-2 text-sm">
-            <span className="hud-label">Best time</span>
+            <span className="hud-label">{copy.form.bestTimeLabel}</span>
+            <span className="text-xs text-[color:var(--text-dim)]">
+              {copy.form.bestTimeHelper}
+            </span>
             <input
               name="best_time"
               defaultValue={place?.best_time ?? ""}
@@ -199,12 +227,15 @@ export default function PlaceForm({
           </label>
         </div>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Warnings (optional)</span>
+          <span className="hud-label">{copy.form.warningsLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.warningsHelper}
+          </span>
           <textarea
             name="warnings"
             defaultValue={warnings}
             className="min-h-[90px] w-full border border-[color:var(--border-color)] bg-[color:var(--bg-terminal-black)] px-3 py-2 text-[color:var(--text-hologram)]"
-            placeholder="Short, factual warnings. Separate with commas."
+            placeholder="Loud. Long wait. Cash only."
           />
         </label>
       </section>
@@ -212,14 +243,17 @@ export default function PlaceForm({
       <section className="panel flex flex-col gap-4 border border-[color:var(--border-color)] p-5">
         <div className="flex items-center justify-between gap-4">
           <h2 className="display-title text-lg text-[color:var(--text-hologram)]">
-            Links & Media
+            {copy.form.linksTitle}
           </h2>
           <span className="hud-meta text-[color:var(--text-dim)]">
-            {"// MAPS + SOCIAL"}
+            {copy.form.mapsLabel}
           </span>
         </div>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Google Maps URL</span>
+          <span className="hud-label">{copy.form.googleMapsLabel}</span>
+          <span className="text-xs text-[color:var(--text-dim)]">
+            {copy.form.googleMapsHelper}
+          </span>
           <input
             name="googleMapsUrl"
             defaultValue={links.googleMapsUrl ?? ""}
@@ -228,7 +262,7 @@ export default function PlaceForm({
           />
         </label>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Apple Maps URL</span>
+          <span className="hud-label">{copy.form.appleMapsLabel}</span>
           <input
             name="appleMapsUrl"
             defaultValue={links.appleMapsUrl ?? ""}
@@ -238,7 +272,7 @@ export default function PlaceForm({
         </label>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm">
-            <span className="hud-label">Instagram</span>
+            <span className="hud-label">{copy.form.instagramLabel}</span>
             <input
               name="instagramUrl"
               defaultValue={links.instagramUrl ?? ""}
@@ -247,7 +281,7 @@ export default function PlaceForm({
             />
           </label>
           <label className="space-y-2 text-sm">
-            <span className="hud-label">Website</span>
+            <span className="hud-label">{copy.form.websiteLabel}</span>
             <input
               name="websiteUrl"
               defaultValue={links.websiteUrl ?? ""}
@@ -257,7 +291,7 @@ export default function PlaceForm({
           </label>
         </div>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Phone</span>
+          <span className="hud-label">{copy.form.phoneLabel}</span>
           <input
             name="phone"
             defaultValue={links.phone ?? ""}
@@ -266,7 +300,7 @@ export default function PlaceForm({
           />
         </label>
         <label className="space-y-2 text-sm">
-          <span className="hud-label">Images (comma separated URLs)</span>
+          <span className="hud-label">{copy.form.imagesLabel}</span>
           <input
             name="images"
             defaultValue={images}
@@ -283,8 +317,8 @@ export default function PlaceForm({
       )}
 
       <div className="flex flex-wrap gap-3">
-        <SubmitButton label="Save Draft" intent="save" />
-        <SubmitButton label="Submit for Vote" intent="submit" />
+        <SubmitButton label={copy.cta.saveDraft} intent="save" />
+        <SubmitButton label={copy.cta.submitVote} intent="submit" />
       </div>
     </form>
   );

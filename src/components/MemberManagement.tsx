@@ -1,4 +1,5 @@
 import { updateMember } from "@/lib/actions/members";
+import { copy } from "@/lib/copy";
 import type { Profile } from "@/lib/types";
 
 export default function MemberManagement({ profiles }: { profiles: Profile[] }) {
@@ -6,10 +7,13 @@ export default function MemberManagement({ profiles }: { profiles: Profile[] }) 
     return (
       <div className="panel-muted border border-[color:var(--border-color)] p-5">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          {"// NO_MEMBERS"}
+          {copy.members.title}
         </p>
         <p className="text-sm text-[color:var(--text-hologram)]">
-          No member profiles found.
+          {copy.members.empty}
+        </p>
+        <p className="mt-2 text-sm text-[color:var(--text-dim)]">
+          {copy.members.emptyBody}
         </p>
       </div>
     );
@@ -38,14 +42,14 @@ export default function MemberManagement({ profiles }: { profiles: Profile[] }) 
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <label className="text-xs uppercase tracking-[0.24em] text-[color:var(--text-dim)]">
-                Role
+                {copy.members.roleLabel}
                 <select
                   name="role"
                   defaultValue={member.role}
                   className="ml-2 border border-[color:var(--border-color)] bg-[color:var(--bg-terminal-black)] px-2 py-1 text-[color:var(--text-hologram)]"
                 >
-                  <option value="admin">admin</option>
-                  <option value="bartender">bartender</option>
+                  <option value="admin">{copy.members.makeAdmin}</option>
+                  <option value="bartender">{copy.members.makeBartender}</option>
                 </select>
               </label>
               <label className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-[color:var(--text-dim)]">
@@ -55,12 +59,12 @@ export default function MemberManagement({ profiles }: { profiles: Profile[] }) 
                   defaultChecked={member.is_active}
                   className="h-4 w-4"
                 />
-                Active
+                {member.is_active ? copy.members.deactivate : copy.members.activate}
               </label>
             </div>
           </div>
           <button type="submit" className="btn-secondary self-start">
-            UPDATE
+            {copy.members.updateButton}
           </button>
         </form>
       ))}

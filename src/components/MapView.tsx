@@ -72,7 +72,7 @@ const StableMapContainer = forwardRef<L.Map, MapContainerProps>(
     const containerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<L.Map | null>(null);
 
-    useImperativeHandle(forwardedRef, () => mapRef.current, [context]);
+    useImperativeHandle(forwardedRef, () => mapRef.current);
 
     useEffect(() => {
       const container = containerRef.current;
@@ -117,6 +117,8 @@ const StableMapContainer = forwardRef<L.Map, MapContainerProps>(
     );
   }
 );
+
+StableMapContainer.displayName = "StableMapContainer";
 
 const hexToRgb = (hex: string) => {
   const normalized = hex.replace("#", "");

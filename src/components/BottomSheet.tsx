@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import type { ReactNode } from "react";
+import { copy } from "@/lib/copy";
 
 type BottomSheetProps = {
   isOpen: boolean;
@@ -31,24 +32,24 @@ export default function BottomSheet({
     <div className="fixed inset-0 z-40 flex items-end justify-center sm:items-center">
       <button
         type="button"
-        aria-label="Close details"
+        aria-label={copy.buttons.close}
         onClick={onClose}
         className="absolute inset-0 bg-black/60"
       />
       <div
         role="dialog"
         aria-modal="false"
-        aria-label={title || "Map details"}
+        aria-label={title || copy.mapSheet.title}
         className="panel relative mx-4 mb-4 w-full max-w-md overflow-auto border border-[color:var(--border-color)] sm:mb-0 sm:max-h-[70vh]"
       >
         <div className="window-bar">
-          <span className="window-title">Selected</span>
+          <span className="window-title">{copy.mapSheet.title}</span>
           <button
             type="button"
             onClick={onClose}
             className="btn-ghost px-2 py-1 text-[10px]"
           >
-            Close
+            {copy.buttons.back}
           </button>
         </div>
         <div className="p-4">

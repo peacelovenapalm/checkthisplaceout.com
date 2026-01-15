@@ -6,6 +6,9 @@ import Link from "next/link";
 import MapView from "@/components/MapView";
 import PlaceCard from "@/components/PlaceCard";
 import BottomSheet from "@/components/BottomSheet";
+import OpsPackPanel from "@/components/OpsPackPanel";
+import { copy } from "@/lib/copy";
+import { useOpsPack } from "@/lib/ops-pack";
 import type { Category, Place } from "@/lib/types";
 
 export default function CategoryExplorer({
@@ -17,13 +20,32 @@ export default function CategoryExplorer({
 }) {
   const [view, setView] = useState<"list" | "map">("list");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const opsPack = useOpsPack(places.map((place) => place.id));
 
   const selected = useMemo(
     () => places.find((place) => place.id === selectedId) ?? null,
     [places, selectedId]
   );
 
-  const mapsSecondary = selected?.links.appleMapsUrl ?? selected?.links.googleMapsUrl;
+  const mapsSecondary = selected?.links.appleMapsUrl ?? null;
+  const selectedInPack = selected ? opsPack.packIds.includes(selected.id) : false;
+  const packPlaces = useMemo(
+    () => places.filter((place) => opsPack.packIds.includes(place.id)),
+    [places, opsPack.packIds]
+  );
+
+  if (!places.length) {
+    return (
+      <div className="panel-muted border border-[color:var(--border-color)] p-6">
+        <h2 className="display-title text-lg text-[color:var(--text-hologram)]">
+          {copy.categoryList.emptyTitle}
+        </h2>
+        <p className="mt-2 text-sm text-[color:var(--text-dim)]">
+          {copy.categoryList.emptyBody}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -38,12 +60,12 @@ export default function CategoryExplorer({
             aria-hidden="true"
             unoptimized
           />
-          <span className="hud-label">View mode</span>
+          <span className="hud-label">{copy.categoryList.viewLabel}</span>
         </div>
         <div
           className="flex items-center gap-2 border border-[color:var(--border-color)] bg-[color:var(--bg-terminal)] p-1"
           role="tablist"
-          aria-label="Toggle list or map view"
+          aria-label={copy.categoryList.toggleAriaLabel}
         >
           <button
             type="button"
@@ -56,7 +78,7 @@ export default function CategoryExplorer({
                 : "text-[color:var(--text-dim)]"
             }`}
           >
-            DATA_LIST
+            {copy.categoryList.toggleList}
           </button>
           <button
             type="button"
@@ -69,15 +91,34 @@ export default function CategoryExplorer({
                 : "text-[color:var(--text-dim)]"
             }`}
           >
-            SAT_VIEW
+            {copy.categoryList.toggleMap}
           </button>
         </div>
       </div>
 
+      {opsPack.packIds.length > 0 && (
+        <OpsPackPanel
+          packPlaces={packPlaces}
+          shareUrl={opsPack.shareUrl}
+          canShare={opsPack.canShare}
+          max={opsPack.max}
+          onRemove={opsPack.remove}
+          onClear={opsPack.clear}
+        />
+      )}
+
       {view === "list" ? (
         <div className="grid gap-5">
           {places.map((place) => (
-            <PlaceCard key={place.id} place={place} />
+            <PlaceCard
+              key={place.id}
+              place={place}
+              packState={{
+                isInPack: opsPack.packIds.includes(place.id),
+                isFull: opsPack.isFull,
+                onToggle: () => opsPack.toggle(place.id)
+              }}
+            />
           ))}
         </div>
       ) : (
@@ -88,7 +129,7 @@ export default function CategoryExplorer({
             onSelect={(placeId) => setSelectedId(placeId)}
           />
           <p className="hud-meta text-[color:var(--text-dim)]">
-            {"// TAP PIN FOR QUICK_ACTIONS"}
+            {copy.categoryList.mapHint}
           </p>
           <BottomSheet
             isOpen={Boolean(selected)}
@@ -98,7 +139,7 @@ export default function CategoryExplorer({
             {selected && (
               <div className="space-y-3">
                 <p className="text-sm text-[color:var(--text-body)]">
-                  {selected.oneLiner}
+                  {selected.oneLiner || copy.placeDetail.missing.description}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a
@@ -106,9 +147,9 @@ export default function CategoryExplorer({
                     href={selected.links.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Directions"
+                    aria-label={copy.cta.openMap}
                   >
-                    INIT_ROUTE
+                    {copy.cta.openMap}
                   </a>
                   {mapsSecondary && (
                     <a
@@ -116,15 +157,23 @@ export default function CategoryExplorer({
                       href={mapsSecondary}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="Open in Maps"
+                      aria-label={copy.cta.openMapAlt}
                     >
-                      EXT_APP_LAUNCH
-                    </a>
-                  )}
-                  <Link className="btn-ghost" href={`/p/${selected.id}`}>
-                    OPEN_FILE
-                  </Link>
-                </div>
+                    {copy.cta.openMapAlt}
+                  </a>
+                )}
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  onClick={() => opsPack.toggle(selected.id)}
+                  disabled={!selectedInPack && opsPack.isFull}
+                >
+                  {selectedInPack ? copy.pack.remove : copy.pack.add}
+                </button>
+                <Link className="btn-ghost" href={`/p/${selected.id}`}>
+                  {copy.buttons.viewPlace}
+                </Link>
+              </div>
               </div>
             )}
           </BottomSheet>

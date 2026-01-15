@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import TagPill from "@/components/TagPill";
+import { copy } from "@/lib/copy";
 import type { Place } from "@/lib/types";
 
 const formatPhoneHref = (phone?: string) => {
@@ -12,10 +13,20 @@ const formatPhoneHref = (phone?: string) => {
   return digits ? `tel:${digits}` : undefined;
 };
 
-export default function PlaceCard({ place }: { place: Place }) {
+export default function PlaceCard({
+  place,
+  packState
+}: {
+  place: Place;
+  packState?: {
+    isInPack: boolean;
+    isFull: boolean;
+    onToggle: () => void;
+  };
+}) {
   const reduceMotion = useReducedMotion();
   const phoneHref = formatPhoneHref(place.links.phone);
-  const mapsSecondary = place.links.appleMapsUrl ?? place.links.googleMapsUrl;
+  const mapsSecondary = place.links.appleMapsUrl ?? null;
   const imageSrc = place.images?.[0];
   const motionProps = reduceMotion
     ? {}
@@ -34,7 +45,7 @@ export default function PlaceCard({ place }: { place: Place }) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-2">
             <p className="hud-meta text-[color:var(--text-dim)]">
-              {`// FILE_ID: ${place.id}`}
+              {`// ${copy.labels.fileId}: ${place.id}`}
             </p>
             <h3 className="display-title text-lg text-[color:var(--text-hologram)] sm:text-xl">
               {place.name}
@@ -42,11 +53,11 @@ export default function PlaceCard({ place }: { place: Place }) {
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
             <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[color:var(--accent-electric-cyan)]">
-              {`// ZONE: ${place.area}`}
+              {`// ${copy.labels.area}: ${place.area}`}
             </span>
             {place.price ? (
               <span className="border border-[color:var(--accent-radical-red)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-radical-red)]">
-                PRICE {place.price}
+                {copy.labels.price} {place.price}
               </span>
             ) : null}
           </div>
@@ -68,7 +79,7 @@ export default function PlaceCard({ place }: { place: Place }) {
           ) : null}
           <div className="flex flex-1 flex-col gap-3">
             <p className="text-sm text-[color:var(--text-hologram)]">
-              {place.oneLiner}
+              {place.oneLiner || copy.placeDetail.missing.description}
             </p>
 
             <div className="flex flex-wrap gap-2">
@@ -79,7 +90,7 @@ export default function PlaceCard({ place }: { place: Place }) {
 
             <div>
               <p className="hud-meta text-[color:var(--text-dim)]">
-                {"// TACTICAL_INPUTS"}
+                {`// ${copy.placeDetail.sections.links}`}
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <a
@@ -87,21 +98,33 @@ export default function PlaceCard({ place }: { place: Place }) {
                   href={place.links.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Directions"
+                  aria-label={copy.cta.openMap}
                 >
-                  INIT_ROUTE
+                  {copy.cta.openMap}
                 </a>
-                <a
-                  className="btn-secondary"
-                  href={mapsSecondary}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Open in Maps"
-                >
-                  EXT_APP_LAUNCH
-                </a>
+                {mapsSecondary && (
+                  <a
+                    className="btn-secondary"
+                    href={mapsSecondary}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={copy.cta.openMapAlt}
+                  >
+                    {copy.cta.openMapAlt}
+                  </a>
+                )}
+                {packState && (
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={packState.onToggle}
+                    disabled={!packState.isInPack && packState.isFull}
+                  >
+                    {packState.isInPack ? copy.pack.remove : copy.pack.add}
+                  </button>
+                )}
                 <Link className="btn-ghost" href={`/p/${place.id}`}>
-                  OPEN_FILE
+                  {copy.buttons.viewPlace}
                 </Link>
               </div>
             </div>
@@ -111,7 +134,7 @@ export default function PlaceCard({ place }: { place: Place }) {
               phoneHref) && (
               <div className="space-y-2">
                 <p className="hud-meta text-[color:var(--text-dim)]">
-                  {"// EXTERNAL_LINKS"}
+                  {`// ${copy.placeDetail.externalLinksLabel}`}
                 </p>
                 <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-[0.3em] text-[color:var(--text-dim)]">
                   {place.links.instagramUrl && (
@@ -121,7 +144,7 @@ export default function PlaceCard({ place }: { place: Place }) {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Instagram
+                      {copy.links.instagram}
                     </a>
                   )}
                   {place.links.websiteUrl && (
@@ -131,7 +154,7 @@ export default function PlaceCard({ place }: { place: Place }) {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Website
+                      {copy.links.website}
                     </a>
                   )}
                   {phoneHref && (
@@ -139,7 +162,7 @@ export default function PlaceCard({ place }: { place: Place }) {
                       className="hover:text-[color:var(--color-cyan)]"
                       href={phoneHref}
                     >
-                      Call
+                      {copy.links.call}
                     </a>
                   )}
                 </div>

@@ -1,5 +1,7 @@
 import Image from "next/image";
 import TagPill from "@/components/TagPill";
+import PlaceDetailTabs from "@/components/PlaceDetailTabs";
+import { copy } from "@/lib/copy";
 import type { Place } from "@/lib/types";
 
 const formatPhoneHref = (phone?: string) => {
@@ -10,7 +12,7 @@ const formatPhoneHref = (phone?: string) => {
 
 export default function PlaceDetail({ place }: { place: Place }) {
   const phoneHref = formatPhoneHref(place.links.phone);
-  const mapsSecondary = place.links.appleMapsUrl ?? place.links.googleMapsUrl;
+  const mapsSecondary = place.links.appleMapsUrl ?? null;
   const warnings = Array.isArray(place.warnings)
     ? place.warnings
     : place.warnings
@@ -18,8 +20,12 @@ export default function PlaceDetail({ place }: { place: Place }) {
     : [];
   const heroImage = place.images?.[0];
   const galleryImages = place.images?.slice(1) ?? [];
+  const hasImages = Boolean(heroImage) || galleryImages.length > 0;
   const lat = place.lat.toFixed(4);
   const lng = place.lng.toFixed(4);
+  const hasExtraLinks = Boolean(
+    place.links.instagramUrl || place.links.websiteUrl || phoneHref
+  );
 
   return (
     <div className="space-y-8">
@@ -37,28 +43,38 @@ export default function PlaceDetail({ place }: { place: Place }) {
             />
           </div>
         )}
+        {!hasImages && (
+          <div className="panel-muted border border-[color:var(--border-color)] p-5 text-sm text-[color:var(--text-dim)]">
+            {copy.placeDetail.missing.images}
+          </div>
+        )}
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
             <span className="hud-meta text-[color:var(--text-dim)]">
-              {`// FILE_ID: ${place.id}`}
+              {`// ${copy.labels.fileId}: ${place.id}`}
             </span>
             <span className="hud-meta text-[color:var(--accent-electric-cyan)]">
-              {`// ZONE: ${place.area}`}
+              {`// ${copy.labels.area}: ${place.area}`}
             </span>
             {place.price && (
               <span className="border border-[color:var(--accent-radical-red)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-radical-red)]">
-                PRICE {place.price}
+                {copy.labels.price} {place.price}
               </span>
             )}
           </div>
           <h1 className="display-title text-3xl text-[color:var(--text-hologram)] md:text-4xl">
             {place.name}
           </h1>
-          <div className="flex flex-wrap items-center gap-2 text-sm text-[color:var(--text-dim)]">
-            {place.vibes.map((vibe) => (
-              <TagPill key={vibe} label={vibe} />
-            ))}
-          </div>
+          {place.vibes.length > 0 && (
+            <div className="space-y-2">
+              <p className="hud-label">{copy.placeDetail.sections.vibe}</p>
+              <div className="flex flex-wrap items-center gap-2 text-sm text-[color:var(--text-dim)]">
+                {place.vibes.map((vibe) => (
+                  <TagPill key={vibe} label={vibe} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         {galleryImages.length > 0 && (
           <div className="panel flex snap-x snap-mandatory gap-4 overflow-x-auto border border-[color:var(--border-color)] p-4">
@@ -81,34 +97,36 @@ export default function PlaceDetail({ place }: { place: Place }) {
         )}
       </section>
 
-      <section className="panel flex flex-col gap-6 border border-[color:var(--border-color)] p-5 text-base">
+      <PlaceDetailTabs place={place} />
+
+      <section className="panel hidden flex-col gap-6 border border-[color:var(--border-color)] p-5 text-base md:flex">
         <div>
           <p className="hud-meta text-[color:var(--text-dim)]">
-            {"// FRIEND_TEXT"}
+            {`// ${copy.placeDetail.sections.whyGo}`}
           </p>
           <h2 className="display-title text-lg text-[color:var(--accent-electric-cyan)]">
-            Field notes
+            {copy.placeDetail.sections.whyGo}
           </h2>
           <p className="mt-2 text-[color:var(--text-hologram)]">
-            {place.story}
+            {place.story || copy.placeDetail.missing.story}
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <h3 className="hud-label">Signature move</h3>
+            <h3 className="hud-label">{copy.placeDetail.sections.whatToOrder}</h3>
             <p className="mt-2 text-[color:var(--text-hologram)]">
-              {place.signatureMove}
+              {place.signatureMove || copy.placeDetail.missing.signature}
             </p>
           </div>
           <div>
-            <h3 className="hud-label">Best time</h3>
+            <h3 className="hud-label">{copy.placeDetail.sections.bestTime}</h3>
             <p className="mt-2 text-[color:var(--text-hologram)]">
               {place.bestTime}
             </p>
           </div>
           {warnings.length > 0 && (
             <div className="md:col-span-2">
-              <h3 className="hud-label">Heads up</h3>
+              <h3 className="hud-label">{copy.placeDetail.warningsLabel}</h3>
               <ul className="mt-2 list-disc space-y-1 pl-5 text-[color:var(--text-hologram)]">
                 {warnings.map((warning) => (
                   <li key={warning}>{warning}</li>
@@ -127,35 +145,37 @@ export default function PlaceDetail({ place }: { place: Place }) {
         </div>
       </section>
 
-      <section className="space-y-3">
+      <section className="hidden space-y-3 md:block">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          {"// TECHNICAL_SPECS"}
+          {`// ${copy.placeDetail.specsLabel}`}
         </p>
         <div className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
           <div className="panel-muted flex flex-col gap-2 p-4">
-            <span className="hud-label">Signal</span>
-            <p className="text-[color:var(--text-hologram)]">{place.oneLiner}</p>
+            <span className="hud-label">{copy.placeDetail.specs.oneLiner}</span>
+            <p className="text-[color:var(--text-hologram)]">
+              {place.oneLiner || copy.placeDetail.missing.description}
+            </p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">
-            <span className="hud-label">Price</span>
+            <span className="hud-label">{copy.placeDetail.specs.price}</span>
             <p className="text-[color:var(--text-hologram)]">
               {place.price || "N/A"}
             </p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">
-            <span className="hud-label">Area</span>
+            <span className="hud-label">{copy.placeDetail.specs.area}</span>
             <p className="text-[color:var(--text-hologram)]">{place.area}</p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">
-            <span className="hud-label">Latitude</span>
+            <span className="hud-label">{copy.placeDetail.specs.latitude}</span>
             <p className="text-[color:var(--text-hologram)]">{lat}</p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">
-            <span className="hud-label">Longitude</span>
+            <span className="hud-label">{copy.placeDetail.specs.longitude}</span>
             <p className="text-[color:var(--text-hologram)]">{lng}</p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">
-            <span className="hud-label">Vibes</span>
+            <span className="hud-label">{copy.placeDetail.specs.vibes}</span>
             <p className="text-[color:var(--text-hologram)]">
               {place.vibes.join(", ")}
             </p>
@@ -163,10 +183,10 @@ export default function PlaceDetail({ place }: { place: Place }) {
         </div>
       </section>
 
-      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[color:var(--border-color)] bg-[rgba(5,5,5,0.96)] px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-4 backdrop-blur md:static md:border md:border-[color:var(--border-color)] md:bg-[color:var(--bg-terminal)] md:p-4">
+      <div className="fixed bottom-0 left-0 right-0 z-30 hidden border-t border-[color:var(--border-color)] bg-[rgba(5,5,5,0.96)] px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-4 backdrop-blur md:static md:block md:border md:border-[color:var(--border-color)] md:bg-[color:var(--bg-terminal)] md:p-4">
         <div className="mx-auto flex max-w-3xl flex-col gap-3">
           <p className="hud-meta text-[color:var(--text-dim)]">
-            {"// COMMAND_BAR"}
+            {`// ${copy.placeDetail.sections.links}`}
           </p>
           <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center">
             <a
@@ -174,19 +194,21 @@ export default function PlaceDetail({ place }: { place: Place }) {
               href={place.links.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Directions"
+              aria-label={copy.cta.openMap}
             >
-              INIT_ROUTE
+              {copy.cta.openMap}
             </a>
-            <a
-              className="btn-secondary w-full md:w-auto"
-              href={mapsSecondary}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open in Maps"
-            >
-              EXT_APP_LAUNCH
-            </a>
+            {mapsSecondary && (
+              <a
+                className="btn-secondary w-full md:w-auto"
+                href={mapsSecondary}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={copy.cta.openMapAlt}
+              >
+                {copy.cta.openMapAlt}
+              </a>
+            )}
             {place.links.websiteUrl && (
               <a
                 className="btn-ghost w-full md:w-auto"
@@ -194,7 +216,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Website
+                {copy.links.website}
               </a>
             )}
             {place.links.instagramUrl && (
@@ -204,15 +226,23 @@ export default function PlaceDetail({ place }: { place: Place }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Instagram
+                {copy.links.instagram}
               </a>
             )}
             {phoneHref && (
               <a className="btn-ghost w-full md:w-auto" href={phoneHref}>
-                Call
+                {copy.links.call}
               </a>
             )}
           </div>
+          {!hasExtraLinks && (
+            <p className="text-xs text-[color:var(--text-dim)]">
+              {copy.placeDetail.missing.links}
+            </p>
+          )}
+          <p className="text-xs text-[color:var(--text-dim)]">
+            {copy.placeDetail.topActionHelper}
+          </p>
         </div>
       </div>
     </div>

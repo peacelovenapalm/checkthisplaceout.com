@@ -1,5 +1,6 @@
 import ReviewQueue from "@/components/ReviewQueue";
 import NotInvited from "@/components/NotInvited";
+import { copy } from "@/lib/copy";
 import { requireActiveProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { PlaceRecord, VoteRecord } from "@/lib/types";
@@ -45,13 +46,13 @@ export default async function ReviewPage({
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
       <section className="panel flex flex-col gap-3 border border-[color:var(--border-color)] p-6">
         <p className="hud-meta text-[color:var(--text-dim)]">
-          {"// REVIEW_QUEUE"}
+          {copy.review.title}
         </p>
         <h1 className="display-title text-2xl text-[color:var(--text-hologram)]">
-          Vote on new submissions
+          {copy.review.title}
         </h1>
         <p className="text-sm text-[color:var(--text-dim)]">
-          YES ≥ 3 and YES &gt; NO auto-publishes. Admins can override anytime.
+          {copy.review.helper}
         </p>
       </section>
 

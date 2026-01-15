@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { copy } from "@/lib/copy";
 
 export type AuthState = {
   error?: string;
@@ -15,7 +16,7 @@ export const signIn = async (
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
-    return { error: "Email and password are required." };
+    return { error: copy.form.validation.required };
   }
 
   const supabase = await createSupabaseServerClient();
