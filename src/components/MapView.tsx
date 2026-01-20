@@ -26,17 +26,17 @@ type MarkerPalette = {
 };
 
 const CATEGORY_COLOR_MAP: Record<string, string> = {
-  "late-night-bites": "#FF5F00",
-  "classic-vegas": "#BC13FE",
-  cocktails: "#FF003C",
-  views: "#00F0FF",
-  "arts-district": "#BC13FE",
-  "low-key": "#00F0FF",
-  dessert: "#FF5F00",
-  breakfast: "#E0FF00",
-  music: "#00F0FF"
+  "late-night-bites": "#00ff41",
+  "classic-vegas": "#ff00ff",
+  cocktails: "#ff00ff",
+  views: "#00f0ff",
+  "arts-district": "#fcee0a",
+  "low-key": "#00f0ff",
+  dessert: "#fcee0a",
+  breakfast: "#fcee0a",
+  music: "#00ff41"
 };
-const DEFAULT_MARKER_COLOR = "#00F0FF";
+const DEFAULT_MARKER_COLOR = "#00f0ff";
 const MARKER_SIZE = 18;
 const markerIconCache = new Map<string, L.DivIcon>();
 

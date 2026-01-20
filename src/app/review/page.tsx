@@ -57,7 +57,7 @@ export default async function ReviewPage({
       </section>
 
       {searchParams?.error && (
-        <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,60,0.1)] p-4 text-sm text-[color:var(--color-red)]">
+        <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,255,0.12)] p-4 text-sm text-[color:var(--color-red)]">
           {searchParams.error}
         </div>
       )}

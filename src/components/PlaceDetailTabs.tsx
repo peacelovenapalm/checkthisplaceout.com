@@ -34,7 +34,7 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
           type="button"
           className={`btn-base px-3 py-2 text-[10px] ${
             activeTab === "story"
-              ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+              ? "bg-[color:var(--accent-cyber-yellow)] text-[color:var(--bg-terminal-black)]"
               : "text-[color:var(--text-dim)]"
           }`}
           onClick={() => setActiveTab("story")}
@@ -45,7 +45,7 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
           type="button"
           className={`btn-base px-3 py-2 text-[10px] ${
             activeTab === "specs"
-              ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+              ? "bg-[color:var(--accent-cyber-yellow)] text-[color:var(--bg-terminal-black)]"
               : "text-[color:var(--text-dim)]"
           }`}
           onClick={() => setActiveTab("specs")}
@@ -56,7 +56,7 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
           type="button"
           className={`btn-base px-3 py-2 text-[10px] ${
             activeTab === "links"
-              ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+              ? "bg-[color:var(--accent-cyber-yellow)] text-[color:var(--bg-terminal-black)]"
               : "text-[color:var(--text-dim)]"
           }`}
           onClick={() => setActiveTab("links")}

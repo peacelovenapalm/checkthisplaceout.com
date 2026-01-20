@@ -74,7 +74,7 @@ export default function CategoryExplorer({
             onClick={() => setView("list")}
             className={`btn-base px-3 py-1 text-[10px] ${
               view === "list"
-                ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+                ? "bg-[color:var(--accent-cyber-yellow)] text-[color:var(--bg-terminal-black)]"
                 : "text-[color:var(--text-dim)]"
             }`}
           >
@@ -87,7 +87,7 @@ export default function CategoryExplorer({
             onClick={() => setView("map")}
             className={`btn-base px-3 py-1 text-[10px] ${
               view === "map"
-                ? "bg-[color:var(--accent-acid-yellow)] text-[color:var(--bg-terminal-black)]"
+                ? "bg-[color:var(--accent-cyber-yellow)] text-[color:var(--bg-terminal-black)]"
                 : "text-[color:var(--text-dim)]"
             }`}
           >

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "validate": "node scripts/validate-data.js"
+    "validate": "node scripts/validate-data.js",
+    "export:places": "node scripts/export-places.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.4.0",

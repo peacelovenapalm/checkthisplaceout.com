@@ -7,7 +7,7 @@ export const copy = {
   nav: {
     home: "Home",
     categories: "Categories",
-    map: "Map",
+    map: "SAT_VIEW",
     about: "About",
     contributorLogin: "Contributor Login",
     privacy: "Privacy"
@@ -20,18 +20,18 @@ export const copy = {
   },
   cta: {
     browse: "Browse",
-    openMap: "Open in Maps",
-    openMapAlt: "Open in Maps",
+    openMap: "INIT_ROUTE",
+    openMapAlt: "EXT_APP_LAUNCH",
     saveDraft: "Save draft",
     submitVote: "Submit for vote",
     approve: "Approve",
     reject: "Reject"
   },
   buttons: {
-    browseCategories: "Browse categories",
-    openMapView: "Open map",
-    viewList: "View list",
-    viewMap: "View map",
+    browseCategories: "DATA_LIST",
+    openMapView: "SAT_VIEW",
+    viewList: "DATA_LIST",
+    viewMap: "SAT_VIEW",
     back: "Back",
     share: "Share",
     copyLink: "Copy link",
@@ -66,8 +66,8 @@ export const copy = {
     helper: "If it's here, it passed.",
     viewLabel: "View",
     toggleAriaLabel: "Toggle list or map view",
-    toggleList: "List",
-    toggleMap: "Map",
+    toggleList: "DATA_LIST",
+    toggleMap: "SAT_VIEW",
     mapHint: "If it's here, it passed.",
     emptyTitle: "Nothing approved yet.",
     emptyBody: "Pick another lane. Or check back."
@@ -257,9 +257,9 @@ export const copy = {
     call: "Call"
   },
   system: {
-    loading: "Loading...",
-    oneSec: "One sec...",
-    fetching: "Hold up..."
+    loading: "LOADING_ASSETS...",
+    oneSec: "ONE_SEC...",
+    fetching: "FETCHING_FEED..."
   },
   dev: {
     missingEnv: {
@@ -274,8 +274,8 @@ export const copy = {
   errors: {
     notAllowedTitle: "Not allowed.",
     notAllowedBody: "You don't have access to this.",
-    genericTitle: "That didn't work.",
-    genericBody: "Try again.",
+    genericTitle: "ERR::CONNECTION_LOST",
+    genericBody: "RETRY.",
     notFoundTitle: "Wrong door.",
     notFoundBody: "Go back and pick again."
   },

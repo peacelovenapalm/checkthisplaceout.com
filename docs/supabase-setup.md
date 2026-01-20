@@ -22,4 +22,8 @@ You mentioned the Supabase project is not created yet. Follow this once per envi
    - `/login` should work
    - Contributor routes are gated until a matching `profiles` row exists
 
+Optional: Export approved places to JSON (keeps public pages JSON-driven):
+- Ensure `SUPABASE_SECRET_KEY` is set in `.env.local`
+- Run `npm run export:places`
+
 Note: Until the migration runs, database queries will fail because the tables do not exist.

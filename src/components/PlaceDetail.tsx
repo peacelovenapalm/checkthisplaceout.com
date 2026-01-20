@@ -57,7 +57,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
               {`// ${copy.labels.area}: ${place.area}`}
             </span>
             {place.price && (
-              <span className="border border-[color:var(--accent-radical-red)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-radical-red)]">
+              <span className="border border-[color:var(--accent-cyber-yellow)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-cyber-yellow)]">
                 {copy.labels.price} {place.price}
               </span>
             )}

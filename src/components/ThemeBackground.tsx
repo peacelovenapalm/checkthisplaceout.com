@@ -10,7 +10,7 @@ export default function ThemeBackground() {
         className="absolute inset-0 bg-drift opacity-70"
         style={{
           backgroundImage:
-            "radial-gradient(520px circle at 12% 18%, rgba(255, 95, 0, 0.18), transparent 62%), radial-gradient(560px circle at 85% 12%, rgba(0, 240, 255, 0.14), transparent 64%), radial-gradient(460px circle at 78% 82%, rgba(188, 19, 254, 0.14), transparent 66%)"
+            "radial-gradient(520px circle at 12% 18%, rgba(0, 255, 65, 0.18), transparent 62%), radial-gradient(560px circle at 85% 12%, rgba(0, 240, 255, 0.14), transparent 64%), radial-gradient(460px circle at 78% 82%, rgba(255, 0, 255, 0.14), transparent 66%)"
         }}
       />
       <div

@@ -117,7 +117,7 @@ export default function MembersAdminPanel() {
             {copy.members.activeNowLabel}
           </label>
           {inviteState.error && (
-            <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,60,0.1)] p-3 text-xs text-[color:var(--color-red)]">
+            <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,255,0.12)] p-3 text-xs text-[color:var(--color-red)]">
               {inviteState.error}
             </div>
           )}
@@ -169,7 +169,7 @@ export default function MembersAdminPanel() {
             />
           </label>
           {resetState.error && (
-            <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,60,0.1)] p-3 text-xs text-[color:var(--color-red)]">
+            <div className="border border-[color:var(--color-red)] bg-[rgba(255,0,255,0.12)] p-3 text-xs text-[color:var(--color-red)]">
               {resetState.error}
             </div>
           )}

@@ -110,5 +110,125 @@
     },
     "images": ["/places/neon-museum.svg"],
     "warnings": "Tickets sell out on weekends."
+  },
+  {
+    "id": "peppermill-lounge",
+    "name": "Peppermill Restaurant & Fireside Lounge",
+    "categories": ["classic-vegas", "late-night-bites"],
+    "area": "Strip",
+    "lat": 36.1331,
+    "lng": -115.1639,
+    "oneLiner": "Old-school Vegas lounge with neon fire pits and late-night plates.",
+    "story": "If you want a classic Vegas reset without the club scene, this is the move. The lounge is dark, warm, and full of neon glow.",
+    "signatureMove": "Grab a fire-side booth and split the nachos.",
+    "bestTime": "Late night or after a show.",
+    "vibes": ["Iconic", "Neon", "Late-night"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Peppermill%20Restaurant%20%26%20Fireside%20Lounge%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Peppermill%20Restaurant%20%26%20Fireside%20Lounge&ll=36.1331,-115.1639"
+    },
+    "images": ["/places/neon-museum.svg"],
+    "warnings": "The lounge gets busy after midnight."
+  },
+  {
+    "id": "the-griffin",
+    "name": "The Griffin",
+    "categories": ["low-key", "cocktails"],
+    "area": "Downtown",
+    "lat": 36.1694,
+    "lng": -115.1449,
+    "oneLiner": "Candlelit lounge downtown when you want a low-key drink.",
+    "story": "Dim lights, brick walls, and a calm soundtrack. It is the kind of spot that slows the night down in the best way.",
+    "signatureMove": "Order an old fashioned and grab a corner booth.",
+    "bestTime": "Weeknights after 8.",
+    "vibes": ["Moody", "Low-key", "Downtown"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20Griffin%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=The%20Griffin&ll=36.1694,-115.1449"
+    },
+    "images": ["/places/esthers-kitchen.svg"],
+    "warnings": "Seating is limited on busy weekends."
+  },
+  {
+    "id": "legacy-club",
+    "name": "Legacy Club",
+    "categories": ["views", "cocktails"],
+    "area": "Downtown",
+    "lat": 36.1709,
+    "lng": -115.1457,
+    "oneLiner": "Rooftop lounge with skyline views and clean pours.",
+    "story": "Come for the view, stay for the atmosphere. It is high up, a little dressy, and perfect for skyline photos.",
+    "signatureMove": "Order a martini and step out to the terrace.",
+    "bestTime": "Sunset into late night.",
+    "vibes": ["Panoramic", "Upscale", "Social"],
+    "price": "$$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Legacy%20Club%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Legacy%20Club&ll=36.1709,-115.1457"
+    },
+    "images": ["/places/skyfall-lounge.svg"],
+    "warnings": "Dress code leans upscale."
+  },
+  {
+    "id": "suzuya-patisserie",
+    "name": "Suzuya Patisserie",
+    "categories": ["dessert"],
+    "area": "Chinatown",
+    "lat": 36.1265,
+    "lng": -115.1972,
+    "oneLiner": "Japanese pastries and light desserts when you want something clean.",
+    "story": "A calm counter with precise cakes and soft lighting. Perfect for a sweet stop after dinner.",
+    "signatureMove": "Grab the strawberry shortcake slice.",
+    "bestTime": "Afternoons or after dinner.",
+    "vibes": ["Sweet", "Light", "Chill"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Suzuya%20Patisserie%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Suzuya%20Patisserie&ll=36.1265,-115.1972"
+    },
+    "images": ["/places/neon-museum.svg"],
+    "warnings": "Arrive early for the best selection."
+  },
+  {
+    "id": "eggslut",
+    "name": "Eggslut",
+    "categories": ["breakfast"],
+    "area": "Strip",
+    "lat": 36.1093,
+    "lng": -115.1735,
+    "oneLiner": "Fast breakfast sandwiches with soft eggs and crisp potatoes.",
+    "story": "Quick line, big payoff. This is the breakfast stop when you need something hot and simple before the day starts.",
+    "signatureMove": "Get the Fairfax and a side of potatoes.",
+    "bestTime": "Mornings before the crowds or late brunch.",
+    "vibes": ["Fast", "Casual", "Crowded"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Eggslut%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=Eggslut&ll=36.1093,-115.1735"
+    },
+    "images": ["/places/tacos-el-gordo.svg"],
+    "warnings": "Expect a line on weekends."
+  },
+  {
+    "id": "sand-dollar-lounge",
+    "name": "The Sand Dollar Lounge",
+    "categories": ["music", "cocktails"],
+    "area": "Spring Valley",
+    "lat": 36.1262,
+    "lng": -115.191,
+    "oneLiner": "Live blues and rock with a real local bar feel.",
+    "story": "Small stage, strong band nights, and a crowd that cares about the music. A solid pick when you want live sound without the mega venue.",
+    "signatureMove": "Catch the house band and order a whiskey.",
+    "bestTime": "Late night on weekends.",
+    "vibes": ["Live", "Loud", "Local"],
+    "price": "$$",
+    "links": {
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20Sand%20Dollar%20Lounge%20Las%20Vegas",
+      "appleMapsUrl": "https://maps.apple.com/?q=The%20Sand%20Dollar%20Lounge&ll=36.1262,-115.191"
+    },
+    "images": ["/places/golden-tiki.svg"],
+    "warnings": "Cover charges can vary by night."
   }
 ]

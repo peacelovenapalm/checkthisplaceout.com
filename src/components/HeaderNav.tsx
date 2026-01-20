@@ -30,10 +30,10 @@ export default function HeaderNav() {
           </span>
         </Link>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-[color:var(--accent-electric-cyan)]">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-[color:var(--accent-neon-green)]">
             <span
               aria-hidden="true"
-              className="h-2 w-2 animate-pulse bg-[color:var(--accent-electric-cyan)] shadow-[0_0_8px_rgba(0,240,255,0.7)]"
+              className="h-2 w-2 animate-pulse bg-[color:var(--accent-neon-green)] shadow-[0_0_8px_rgba(0,255,65,0.7)]"
             />
             <span className="font-mono">SYS.ONLINE</span>
           </div>

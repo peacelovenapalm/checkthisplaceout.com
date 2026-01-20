@@ -19,7 +19,7 @@ export default function CategoryTile({
       className="group data-cartridge flex min-h-[170px] flex-col"
     >
       <div className="data-cartridge__bar">
-        <span className="data-cartridge__title group-hover:text-[color:var(--accent-cutrun-orange)] group-hover:text-glow">
+        <span className="data-cartridge__title group-hover:text-[color:var(--accent-neon-green)] group-hover:text-glow">
           {category.title}
         </span>
         <div className="data-cartridge__meta">
