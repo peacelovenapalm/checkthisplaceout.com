@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import BottomSheet from "@/components/BottomSheet";
-import MapView from "@/components/MapView";
+import MapView from "@/components/MapView.client";
 import OpsPackPanel from "@/components/OpsPackPanel";
 import { copy } from "@/lib/copy";
 import { useOpsPack } from "@/lib/ops-pack";
@@ -59,12 +59,12 @@ export default function HomeMapSection({ places }: { places: Place[] }) {
       <BottomSheet
         isOpen={Boolean(selected)}
         onClose={() => setSelectedId(null)}
-        title={selected?.name}
+        title={selected?.title}
       >
         {selected && (
           <div className="space-y-3">
             <p className="text-sm text-[color:var(--text-hologram)]">
-              {selected.oneLiner || copy.placeDetail.missing.description}
+              {selected.description_short || copy.placeDetail.missing.description}
             </p>
             <div className="flex flex-wrap gap-3">
               <a

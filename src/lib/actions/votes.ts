@@ -1,26 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getActionProfile } from "@/lib/actions/guards";
-import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import type { SupabaseServerClient } from "@/lib/supabase/server";
+import { requireMember } from "@/lib/auth/requireMember";
 
-const countVotes = async (
-  supabase: SupabaseServerClient,
-  placeId: string,
-  vote: "yes" | "no"
-) => {
-  const { count, error } = await supabase
-    .from("votes")
-    .select("id", { count: "exact", head: true })
-    .eq("place_id", placeId)
-    .eq("vote", vote);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
+type CastVoteResult = {
+  yes_count: number;
+  no_count: number;
+  status: string;
 };
 
 export const castVote = async (formData: FormData) => {
@@ -32,36 +18,22 @@ export const castVote = async (formData: FormData) => {
       throw new Error("Invalid vote payload.");
     }
 
-    const { supabase, userId } = await getActionProfile();
-
-    const { error } = await supabase.from("votes").insert({
-      place_id: placeId,
-      voter_id: userId,
-      vote
+    const { supabase } = await requireMember();
+    const { data, error } = await supabase.rpc("cast_vote", {
+      p_place_id: placeId,
+      p_vote: vote
     });
 
     if (error) {
       throw new Error(error.message);
     }
 
-    const yesCount = await countVotes(supabase, placeId, "yes");
-    const noCount = await countVotes(supabase, placeId, "no");
-
-    if (yesCount >= 3 && yesCount > noCount) {
-      const admin = createSupabaseAdminClient();
-      const { error: approveError } = await admin
-        .from("places")
-        .update({
-          status: "approved",
-          approved_at: new Date().toISOString()
-        })
-        .eq("id", placeId)
-        .eq("status", "submitted");
-
-      if (approveError) {
-        throw new Error(approveError.message);
-      }
+    const result = Array.isArray(data) ? data[0] : data;
+    if (!result) {
+      throw new Error("Vote failed.");
     }
+
+    return result as CastVoteResult;
   } catch (error) {
     const message = error instanceof Error ? error.message : "Vote failed.";
     redirect(`/review?error=${encodeURIComponent(message)}`);

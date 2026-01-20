@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { copy } from "@/lib/copy";
 import type { Category, PlaceRecord } from "@/lib/types";
 import { upsertPlace } from "@/lib/actions/places";
@@ -35,7 +36,7 @@ export default function PlaceForm({
   categories: Category[];
   place?: PlaceRecord | null;
 }) {
-  const [state, formAction] = useFormState(upsertPlace, initialState);
+  const [state, formAction] = useActionState(upsertPlace, initialState);
   const selectedCategories = new Set(place?.categories ?? []);
   const vibes = place?.vibes?.join(", ") ?? "";
   const images = Array.isArray(place?.images) ? place?.images.join(", ") : "";

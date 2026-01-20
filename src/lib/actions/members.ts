@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { copy } from "@/lib/copy";
-import { getActionProfile } from "@/lib/actions/guards";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { requireMember } from "@/lib/auth/requireMember";
 import type { ProfileRole } from "@/lib/types";
 
 export type InviteMemberState = {
@@ -23,7 +23,7 @@ const parseText = (value: FormDataEntryValue | null) =>
 
 export const updateMember = async (formData: FormData) => {
   try {
-    const { supabase, profile } = await getActionProfile();
+    const { supabase, profile } = await requireMember();
 
     if (profile.role !== "admin") {
       redirect("/dashboard");
@@ -58,7 +58,7 @@ export const inviteMember = async (
   formData: FormData
 ): Promise<InviteMemberState> => {
   try {
-    const { profile } = await getActionProfile();
+    const { profile } = await requireMember();
 
     if (profile.role !== "admin") {
       return { error: copy.errors.notAllowedBody };
@@ -122,7 +122,7 @@ export const resetMemberLogin = async (
   formData: FormData
 ): Promise<ResetMemberState> => {
   try {
-    const { profile } = await getActionProfile();
+    const { profile } = await requireMember();
 
     if (profile.role !== "admin") {
       return { error: copy.errors.notAllowedBody };

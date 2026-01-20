@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "validate": "node scripts/validate-data.js",
-    "export:places": "node scripts/export-places.js"
+    "export:places": "node scripts/export-places.js",
+    "doctor": "node scripts/doctor.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.4.0",
@@ -26,6 +27,7 @@
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.17",
+    "dotenv": "^16.4.5",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.1",
     "postcss": "^8.4.34",

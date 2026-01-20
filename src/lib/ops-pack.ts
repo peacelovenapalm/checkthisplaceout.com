@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const PACK_PARAM = "pack";
@@ -32,15 +32,24 @@ export const useOpsPack = (availableIds: string[]) => {
   const pathname = usePathname();
 
   const availableSet = useMemo(() => new Set(availableIds), [availableIds]);
+  const searchKey = searchParams.toString();
   const packFromUrl = useMemo(() => {
     const ids = parsePackParam(searchParams.get(PACK_PARAM));
     return unique(ids.filter((id) => availableSet.has(id)));
-  }, [searchParams, availableSet]);
+  }, [searchKey, searchParams, availableSet]);
 
   const [packIds, setPackIds] = useState<string[]>(packFromUrl);
+  const didInitRef = useRef(false);
+
+  const arraysEqual = (a: string[], b: string[]) => {
+    if (a.length !== b.length) return false;
+    return a.every((value, index) => value === b[index]);
+  };
 
   useEffect(() => {
-    setPackIds(packFromUrl);
+    if (didInitRef.current) return;
+    setPackIds((prev) => (arraysEqual(prev, packFromUrl) ? prev : packFromUrl));
+    didInitRef.current = true;
   }, [packFromUrl]);
 
   const syncUrl = useCallback(
@@ -63,6 +72,7 @@ export const useOpsPack = (availableIds: string[]) => {
   );
 
   useEffect(() => {
+    if (!didInitRef.current) return;
     syncUrl(packIds);
   }, [packIds, syncUrl]);
 

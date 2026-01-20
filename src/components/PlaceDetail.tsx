@@ -15,8 +15,6 @@ export default function PlaceDetail({ place }: { place: Place }) {
   const mapsSecondary = place.links.appleMapsUrl ?? null;
   const warnings = Array.isArray(place.warnings)
     ? place.warnings
-    : place.warnings
-    ? [place.warnings]
     : [];
   const heroImage = place.images?.[0];
   const galleryImages = place.images?.slice(1) ?? [];
@@ -34,7 +32,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
           <div className="image-frame relative h-[240px] sm:h-[320px] md:h-[380px]">
             <Image
               src={heroImage}
-              alt={`${place.name} hero`}
+              alt={`${place.title} hero`}
               fill
               className="image-glitch hero-glitch object-cover"
               sizes="(max-width: 768px) 100vw, 720px"
@@ -63,7 +61,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
             )}
           </div>
           <h1 className="display-title text-3xl text-[color:var(--text-hologram)] md:text-4xl">
-            {place.name}
+            {place.title}
           </h1>
           {place.vibes.length > 0 && (
             <div className="space-y-2">
@@ -85,7 +83,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
               >
                 <Image
                   src={src}
-                  alt={`${place.name} photo ${index + 2}`}
+                  alt={`${place.title} photo ${index + 2}`}
                   fill
                   className="image-glitch object-cover"
                   sizes="(max-width: 768px) 70vw, 45vw"
@@ -115,13 +113,13 @@ export default function PlaceDetail({ place }: { place: Place }) {
           <div>
             <h3 className="hud-label">{copy.placeDetail.sections.whatToOrder}</h3>
             <p className="mt-2 text-[color:var(--text-hologram)]">
-              {place.signatureMove || copy.placeDetail.missing.signature}
+              {place.signature_move || copy.placeDetail.missing.signature}
             </p>
           </div>
           <div>
             <h3 className="hud-label">{copy.placeDetail.sections.bestTime}</h3>
             <p className="mt-2 text-[color:var(--text-hologram)]">
-              {place.bestTime}
+              {place.best_time || "--"}
             </p>
           </div>
           {warnings.length > 0 && (
@@ -132,14 +130,6 @@ export default function PlaceDetail({ place }: { place: Place }) {
                   <li key={warning}>{warning}</li>
                 ))}
               </ul>
-            </div>
-          )}
-          {place.accessibilityNotes && (
-            <div className="md:col-span-2">
-              <h3 className="hud-label">Accessibility</h3>
-              <p className="mt-2 text-[color:var(--text-hologram)]">
-                {place.accessibilityNotes}
-              </p>
             </div>
           )}
         </div>
@@ -153,7 +143,7 @@ export default function PlaceDetail({ place }: { place: Place }) {
           <div className="panel-muted flex flex-col gap-2 p-4">
             <span className="hud-label">{copy.placeDetail.specs.oneLiner}</span>
             <p className="text-[color:var(--text-hologram)]">
-              {place.oneLiner || copy.placeDetail.missing.description}
+              {place.description_short || copy.placeDetail.missing.description}
             </p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">

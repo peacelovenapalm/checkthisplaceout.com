@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import MapView from "@/components/MapView";
+import MapView from "@/components/MapView.client";
 import PlaceCard from "@/components/PlaceCard";
 import BottomSheet from "@/components/BottomSheet";
 import OpsPackPanel from "@/components/OpsPackPanel";
@@ -134,12 +134,12 @@ export default function CategoryExplorer({
           <BottomSheet
             isOpen={Boolean(selected)}
             onClose={() => setSelectedId(null)}
-            title={selected?.name}
+            title={selected?.title}
           >
             {selected && (
               <div className="space-y-3">
                 <p className="text-sm text-[color:var(--text-body)]">
-                  {selected.oneLiner || copy.placeDetail.missing.description}
+                  {selected.description_short || copy.placeDetail.missing.description}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a

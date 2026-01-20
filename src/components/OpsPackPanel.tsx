@@ -61,7 +61,7 @@ export default function OpsPackPanel({
           >
             <div>
               <p className="text-sm text-[color:var(--text-hologram)]">
-                {place.name}
+                {place.title}
               </p>
               <p className="text-xs text-[color:var(--text-dim)]">
                 {place.area || "--"}

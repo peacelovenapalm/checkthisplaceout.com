@@ -48,7 +48,7 @@ export default function PlaceCard({
               {`// ${copy.labels.fileId}: ${place.id}`}
             </p>
             <h3 className="display-title text-lg text-[color:var(--text-hologram)] sm:text-xl">
-              {place.name}
+              {place.title}
             </h3>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
@@ -68,7 +68,7 @@ export default function PlaceCard({
             <div className="image-frame h-40 w-full sm:h-32 sm:w-40 sm:flex-shrink-0">
               <Image
                 src={imageSrc}
-                alt={place.name}
+                alt={place.title}
                 width={320}
                 height={240}
                 className="image-glitch h-full w-full object-cover"
@@ -79,7 +79,7 @@ export default function PlaceCard({
           ) : null}
           <div className="flex flex-1 flex-col gap-3">
             <p className="text-sm text-[color:var(--text-hologram)]">
-              {place.oneLiner || copy.placeDetail.missing.description}
+              {place.description_short || copy.placeDetail.missing.description}
             </p>
 
             <div className="flex flex-wrap gap-2">

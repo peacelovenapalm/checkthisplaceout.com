@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { copy } from "@/lib/copy";
 import {
   inviteMember,
@@ -23,11 +23,11 @@ const SubmitButton = ({ label }: { label: string }) => {
 };
 
 export default function MembersAdminPanel() {
-  const [inviteState, inviteAction] = useFormState(
+  const [inviteState, inviteAction] = useActionState(
     inviteMember,
     initialInviteState
   );
-  const [resetState, resetAction] = useFormState(
+  const [resetState, resetAction] = useActionState(
     resetMemberLogin,
     initialResetState
   );

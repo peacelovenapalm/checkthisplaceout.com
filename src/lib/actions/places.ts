@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { copy } from "@/lib/copy";
-import { getActionProfile } from "@/lib/actions/guards";
+import { requireMember } from "@/lib/auth/requireMember";
 import type { SupabaseServerClient } from "@/lib/supabase/server";
 import type { PlaceStatus, Price } from "@/lib/types";
 
@@ -143,6 +143,105 @@ const validateForSubmit = (payload: ReturnType<typeof buildPayload>) => {
   return null;
 };
 
+export const createDraftPlace = async (
+  supabase: SupabaseServerClient,
+  profileId: string,
+  payload: ReturnType<typeof buildPayload>
+) => {
+  const baseSlug = slugify(payload.title) || "place";
+  const slug = await ensureUniqueSlug(supabase, baseSlug, null);
+
+  const { data, error } = await supabase
+    .from("places")
+    .insert({
+      ...payload,
+      slug,
+      created_by: profileId,
+      status: "draft"
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data.id as string;
+};
+
+export const updateDraftOrSubmittedPlace = async (
+  supabase: SupabaseServerClient,
+  placeId: string,
+  payload: ReturnType<typeof buildPayload>,
+  profile: { id: string; role: "admin" | "bartender" }
+) => {
+  const { data: place, error } = await supabase
+    .from("places")
+    .select("id, created_by, status")
+    .eq("id", placeId)
+    .maybeSingle();
+
+  if (error || !place) {
+    throw new Error("Place not found.");
+  }
+
+  const isOwner = place.created_by === profile.id;
+  const isAdmin = profile.role === "admin";
+  const allowedOwnerStatuses = new Set(["draft", "submitted", "rejected"]);
+
+  if (!isAdmin && !isOwner) {
+    throw new Error("You do not have access to this place.");
+  }
+
+  if (!isAdmin && !allowedOwnerStatuses.has(place.status)) {
+    throw new Error("This place cannot be edited.");
+  }
+
+  const { error: updateError } = await supabase
+    .from("places")
+    .update(payload)
+    .eq("id", placeId);
+
+  if (updateError) {
+    throw new Error(updateError.message);
+  }
+};
+
+export const submitPlace = async (
+  supabase: SupabaseServerClient,
+  placeId: string,
+  profile: { id: string; role: "admin" | "bartender" }
+) => {
+  const { data: place, error } = await supabase
+    .from("places")
+    .select("id, created_by, status")
+    .eq("id", placeId)
+    .maybeSingle();
+
+  if (error || !place) {
+    throw new Error("Place not found.");
+  }
+
+  const isOwner = place.created_by === profile.id;
+  const isAdmin = profile.role === "admin";
+
+  if (!isAdmin && !isOwner) {
+    throw new Error("You do not have access to this place.");
+  }
+
+  const { error: submitError } = await supabase
+    .from("places")
+    .update({
+      status: "submitted" as PlaceStatus,
+      submitted_at: new Date().toISOString()
+    })
+    .eq("id", placeId);
+
+  if (submitError) {
+    throw new Error(submitError.message);
+  }
+};
+
 export const upsertPlace = async (
   _prevState: PlaceActionState,
   formData: FormData
@@ -155,7 +254,7 @@ export const upsertPlace = async (
       return { error: "Missing action intent." };
     }
 
-    const { supabase, userId } = await getActionProfile();
+    const { supabase, profile } = await requireMember();
 
     const placeId = parseText(formData.get("placeId")) || null;
     const payload = buildPayload(formData);
@@ -175,46 +274,18 @@ export const upsertPlace = async (
         return { error: copy.form.validation.saveDraftFirst };
       }
 
-      const baseSlug = slugify(payload.title) || "place";
-      const slug = await ensureUniqueSlug(supabase, baseSlug, null);
-
-      const { data, error } = await supabase
-        .from("places")
-        .insert({
-          ...payload,
-          slug,
-          created_by: userId,
-          status: "draft"
-        })
-        .select("id")
-        .single();
-
-      if (error) {
-        return { error: error.message };
-      }
-
-      redirect(`/places/${data.id}/edit`);
+      const createdId = await createDraftPlace(
+        supabase,
+        profile.id,
+        payload
+      );
+      redirect(`/places/${createdId}/edit`);
     }
 
-    const updatePayload: Record<string, unknown> = {
-      ...payload
-    };
+    await updateDraftOrSubmittedPlace(supabase, placeId, payload, profile);
 
     if (isSubmit) {
-      updatePayload.status = "submitted" as PlaceStatus;
-      updatePayload.submitted_at = new Date().toISOString();
-    }
-
-    const { error } = await supabase
-      .from("places")
-      .update(updatePayload)
-      .eq("id", placeId);
-
-    if (error) {
-      return { error: error.message };
-    }
-
-    if (isSubmit) {
+      await submitPlace(supabase, placeId, profile);
       redirect("/dashboard");
     }
 
@@ -228,7 +299,7 @@ export const upsertPlace = async (
 
 export const adminSetPlaceStatus = async (formData: FormData) => {
   try {
-    const { supabase, profile } = await getActionProfile();
+    const { supabase, profile } = await requireMember();
 
     if (profile.role !== "admin") {
       redirect("/review?error=Admin access required.");
@@ -237,7 +308,15 @@ export const adminSetPlaceStatus = async (formData: FormData) => {
     const placeId = parseText(formData.get("placeId"));
     const status = parseText(formData.get("status")) as PlaceStatus;
 
-    if (!placeId || !status) {
+    const allowedStatuses = new Set([
+      "draft",
+      "submitted",
+      "approved",
+      "rejected",
+      "archived"
+    ]);
+
+    if (!placeId || !status || !allowedStatuses.has(status)) {
       redirect("/review?error=Missing place or status.");
     }
 
@@ -245,8 +324,8 @@ export const adminSetPlaceStatus = async (formData: FormData) => {
     if (status === "approved") {
       updatePayload.approved_at = new Date().toISOString();
     }
-    if (status === "rejected") {
-      updatePayload.approved_at = null;
+    if (status === "submitted") {
+      updatePayload.submitted_at = new Date().toISOString();
     }
 
     const { error } = await supabase

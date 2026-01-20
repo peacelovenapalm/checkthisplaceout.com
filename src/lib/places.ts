@@ -1,19 +1,114 @@
-import placesData from "../../data/places.json";
-import type { Place } from "@/lib/types";
+import type { Place, PlaceLinks, PlaceRecord } from "@/lib/types";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const places = placesData as Place[];
-const sortedPlaces = places
-  .slice()
-  .sort((a, b) => a.name.localeCompare(b.name));
+const normalizeLinks = (links: PlaceRecord["links"]): PlaceLinks => {
+  if (!links || typeof links !== "object") {
+    return { googleMapsUrl: "" };
+  }
 
-export const getApprovedPlaces = async () => {
-  return sortedPlaces;
+  return {
+    googleMapsUrl: links.googleMapsUrl ?? "",
+    appleMapsUrl: links.appleMapsUrl ?? undefined,
+    instagramUrl: links.instagramUrl ?? undefined,
+    websiteUrl: links.websiteUrl ?? undefined,
+    phone: links.phone ?? undefined
+  };
 };
 
-export const getApprovedPlacesByCategory = async (slug: string) => {
-  return sortedPlaces.filter((place) => place.categories.includes(slug));
+const normalizeNumber = (value: PlaceRecord["lat"]): number => {
+  if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+  if (typeof value === "string") {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
 };
 
-export const getApprovedPlaceById = async (id: string) => {
-  return sortedPlaces.find((place) => place.id === id) ?? null;
+const mapPlaceRecord = (record: PlaceRecord): Place => ({
+  id: record.id,
+  title: record.title,
+  categories: record.categories ?? [],
+  area: record.area ?? "",
+  lat: normalizeNumber(record.lat),
+  lng: normalizeNumber(record.lng),
+  description_short: record.description_short ?? "",
+  story: record.story ?? "",
+  signature_move: record.signature_move ?? "",
+  best_time: record.best_time ?? "",
+  vibes: record.vibes ?? [],
+  price: record.price ?? "",
+  links: normalizeLinks(record.links),
+  images: record.images ?? [],
+  warnings: record.warnings ?? []
+});
+
+export const getApprovedPlaces = async (): Promise<Place[]> => {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("places")
+      .select("*")
+      .eq("status", "approved")
+      .order("approved_at", { ascending: false });
+
+    if (error) {
+      console.error("getApprovedPlaces error", error.message);
+      return [];
+    }
+
+    return (data as PlaceRecord[]).map(mapPlaceRecord);
+  } catch (error) {
+    console.error("getApprovedPlaces error", error);
+    return [];
+  }
+};
+
+export const getApprovedPlacesByCategory = async (
+  slug: string
+): Promise<Place[]> => {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("places")
+      .select("*")
+      .eq("status", "approved")
+      .contains("categories", [slug])
+      .order("approved_at", { ascending: false });
+
+    if (error) {
+      console.error("getApprovedPlacesByCategory error", error.message);
+      return [];
+    }
+
+    return (data as PlaceRecord[]).map(mapPlaceRecord);
+  } catch (error) {
+    console.error("getApprovedPlacesByCategory error", error);
+    return [];
+  }
+};
+
+export const getApprovedPlaceById = async (
+  id: string
+): Promise<Place | null> => {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("places")
+      .select("*")
+      .eq("id", id)
+      .eq("status", "approved")
+      .maybeSingle();
+
+    if (error || !data) {
+      if (error) {
+        console.error("getApprovedPlaceById error", error.message);
+      }
+      return null;
+    }
+
+    return mapPlaceRecord(data as PlaceRecord);
+  } catch (error) {
+    console.error("getApprovedPlaceById error", error);
+    return null;
+  }
 };

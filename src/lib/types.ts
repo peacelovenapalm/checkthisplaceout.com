@@ -69,19 +69,18 @@ export type VoteRecord = {
 
 export type Place = {
   id: string;
-  name: string;
+  title: string;
   categories: string[];
   area: string;
   lat: number;
   lng: number;
-  oneLiner: string;
+  description_short: string;
   story: string;
-  signatureMove: string;
-  bestTime: string;
+  signature_move: string;
+  best_time: string;
   vibes: string[];
   price?: Price;
   links: PlaceLinks;
   images?: string[];
-  warnings?: string[] | string;
-  accessibilityNotes?: string;
+  warnings?: string[];
 };

@@ -18,8 +18,6 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
   const mapsSecondary = place.links.appleMapsUrl ?? null;
   const warnings = Array.isArray(place.warnings)
     ? place.warnings
-    : place.warnings
-    ? [place.warnings]
     : [];
   const hasExtraLinks = Boolean(
     place.links.instagramUrl || place.links.websiteUrl || phoneHref
@@ -79,12 +77,12 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
             <div>
               <p className="hud-label">{copy.placeDetail.sections.whatToOrder}</p>
               <p className="mt-2">
-                {place.signatureMove || copy.placeDetail.missing.signature}
+                {place.signature_move || copy.placeDetail.missing.signature}
               </p>
             </div>
             <div>
               <p className="hud-label">{copy.placeDetail.sections.bestTime}</p>
-              <p className="mt-2">{place.bestTime || "--"}</p>
+              <p className="mt-2">{place.best_time || "--"}</p>
             </div>
             {warnings.length > 0 && (
               <div>
@@ -96,12 +94,6 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
                 </ul>
               </div>
             )}
-            {place.accessibilityNotes && (
-              <div>
-                <p className="hud-label">Accessibility</p>
-                <p className="mt-2">{place.accessibilityNotes}</p>
-              </div>
-            )}
           </div>
         </div>
       )}
@@ -110,7 +102,7 @@ export default function PlaceDetailTabs({ place }: { place: Place }) {
         <div className="grid gap-3 text-sm text-[color:var(--text-hologram)]">
           <div className="panel-muted flex flex-col gap-2 p-4">
             <span className="hud-label">{copy.placeDetail.specs.oneLiner}</span>
-            <p>{place.oneLiner || copy.placeDetail.missing.description}</p>
+            <p>{place.description_short || copy.placeDetail.missing.description}</p>
           </div>
           <div className="panel-muted flex flex-col gap-2 p-4">
             <span className="hud-label">{copy.placeDetail.specs.price}</span>
