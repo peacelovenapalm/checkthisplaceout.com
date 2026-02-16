@@ -3,13 +3,7 @@
 import { redirect } from "next/navigation";
 import { requireMember } from "@/lib/auth/requireMember";
 
-type CastVoteResult = {
-  yes_count: number;
-  no_count: number;
-  status: string;
-};
-
-export const castVote = async (formData: FormData) => {
+export const castVote = async (formData: FormData): Promise<void> => {
   try {
     const placeId = String(formData.get("placeId") ?? "").trim();
     const vote = String(formData.get("vote") ?? "").trim() as "yes" | "no";
@@ -32,8 +26,6 @@ export const castVote = async (formData: FormData) => {
     if (!result) {
       throw new Error("Vote failed.");
     }
-
-    return result as CastVoteResult;
   } catch (error) {
     const message = error instanceof Error ? error.message : "Vote failed.";
     redirect(`/review?error=${encodeURIComponent(message)}`);

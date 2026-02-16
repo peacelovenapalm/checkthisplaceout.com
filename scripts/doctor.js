@@ -45,6 +45,7 @@ const hasUrl = Boolean(env.NEXT_PUBLIC_SUPABASE_URL);
 const hasPublishable = Boolean(env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
 const hasAnon = Boolean(env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 const hasSecret = Boolean(env.SUPABASE_SECRET_KEY);
+let failed = false;
 
 log("NEXT_PUBLIC_SUPABASE_URL", hasUrl ? mask(env.NEXT_PUBLIC_SUPABASE_URL) : "missing");
 log(
@@ -52,21 +53,41 @@ log(
   hasPublishable ? mask(env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) : "missing"
 );
 
+if (!hasUrl) {
+  log("error", "NEXT_PUBLIC_SUPABASE_URL is required.");
+  failed = true;
+}
+
+if (!hasPublishable) {
+  log(
+    "error",
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is required (sb_publishable_...)."
+  );
+  failed = true;
+}
+
 const keyPath = hasPublishable
   ? "publishable"
   : hasAnon
-  ? "anon (legacy fallback, not used by app)"
+  ? "anon (legacy fallback only; app requires publishable)"
   : "none";
 log("public key path", keyPath);
 
 if (!hasPublishable && hasAnon) {
   log(
     "warning",
-    "publishable key is required by the app; anon key alone will fail"
+    "anon key is legacy-only; app requires a publishable key."
   );
 }
 
 log("SUPABASE_SECRET_KEY", hasSecret ? mask(env.SUPABASE_SECRET_KEY) : "missing");
 if (!hasSecret) {
-  log("warning", "admin actions need SUPABASE_SECRET_KEY");
+  log(
+    "warning",
+    "SUPABASE_SECRET_KEY missing (admin invite/reset and export will fail)."
+  );
+}
+
+if (failed) {
+  process.exitCode = 1;
 }

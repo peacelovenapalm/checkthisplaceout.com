@@ -2,35 +2,12 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
-import {
-  Chakra_Petch,
-  JetBrains_Mono,
-  Space_Grotesk
-} from "next/font/google";
 import Link from "next/link";
 import HeaderNav from "@/components/HeaderNav";
 import ThemeBackground from "@/components/ThemeBackground";
 import PageFlash from "@/components/PageFlash";
 import ScrollGauge from "@/components/ScrollGauge";
 import { copy } from "@/lib/copy";
-
-const displayFont = Chakra_Petch({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["600", "700"]
-});
-
-const bodyFont = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["400", "500"]
-});
-
-const monoFont = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["500"]
-});
 
 export const metadata: Metadata = {
   title: "Check This Place Out",
@@ -51,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} bg-terminal-black font-body text-hologram antialiased`}
+        className="bg-terminal-black font-body text-hologram antialiased"
       >
         <ThemeBackground />
         <PageFlash />

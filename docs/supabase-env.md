@@ -4,10 +4,11 @@ Required:
 - NEXT_PUBLIC_SUPABASE_URL
 - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
-Optional (server-only):
+Required for admin actions (server-only):
 - SUPABASE_SECRET_KEY
 
 Used by:
+- Admin invite/reset flows
 - `npm run export:places`
 
 Notes:

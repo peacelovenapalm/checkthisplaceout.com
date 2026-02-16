@@ -72,7 +72,7 @@ const StableMapContainer = forwardRef<L.Map, MapContainerProps>(
     const containerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<L.Map | null>(null);
 
-    useImperativeHandle(forwardedRef, () => mapRef.current);
+    useImperativeHandle(forwardedRef, () => mapRef.current as L.Map);
 
     useEffect(() => {
       const container = containerRef.current;

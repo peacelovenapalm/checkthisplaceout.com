@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const PACK_PARAM = "pack";
@@ -32,25 +32,12 @@ export const useOpsPack = (availableIds: string[]) => {
   const pathname = usePathname();
 
   const availableSet = useMemo(() => new Set(availableIds), [availableIds]);
-  const searchKey = searchParams.toString();
   const packFromUrl = useMemo(() => {
     const ids = parsePackParam(searchParams.get(PACK_PARAM));
     return unique(ids.filter((id) => availableSet.has(id)));
-  }, [searchKey, searchParams, availableSet]);
+  }, [searchParams, availableSet]);
 
-  const [packIds, setPackIds] = useState<string[]>(packFromUrl);
-  const didInitRef = useRef(false);
-
-  const arraysEqual = (a: string[], b: string[]) => {
-    if (a.length !== b.length) return false;
-    return a.every((value, index) => value === b[index]);
-  };
-
-  useEffect(() => {
-    if (didInitRef.current) return;
-    setPackIds((prev) => (arraysEqual(prev, packFromUrl) ? prev : packFromUrl));
-    didInitRef.current = true;
-  }, [packFromUrl]);
+  const [packIds, setPackIds] = useState<string[]>(() => packFromUrl);
 
   const syncUrl = useCallback(
     (nextIds: string[]) => {
@@ -71,30 +58,40 @@ export const useOpsPack = (availableIds: string[]) => {
     [pathname, router, searchParams]
   );
 
-  useEffect(() => {
-    if (!didInitRef.current) return;
-    syncUrl(packIds);
-  }, [packIds, syncUrl]);
+  const updatePack = useCallback(
+    (nextIds: string[]) => {
+      setPackIds(nextIds);
+      syncUrl(nextIds);
+    },
+    [syncUrl]
+  );
 
-  const toggle = useCallback((id: string) => {
-    setPackIds((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((entry) => entry !== id);
+  const toggle = useCallback(
+    (id: string) => {
+      if (packIds.includes(id)) {
+        updatePack(packIds.filter((entry) => entry !== id));
+        return;
       }
-      if (prev.length >= MAX_PACK) {
-        return prev;
+      if (packIds.length >= MAX_PACK) {
+        return;
       }
-      return [...prev, id];
-    });
-  }, []);
+      updatePack([...packIds, id]);
+    },
+    [packIds, updatePack]
+  );
 
-  const remove = useCallback((id: string) => {
-    setPackIds((prev) => prev.filter((entry) => entry !== id));
-  }, []);
+  const remove = useCallback(
+    (id: string) => {
+      if (!packIds.includes(id)) return;
+      updatePack(packIds.filter((entry) => entry !== id));
+    },
+    [packIds, updatePack]
+  );
 
   const clear = useCallback(() => {
-    setPackIds([]);
-  }, []);
+    if (!packIds.length) return;
+    updatePack([]);
+  }, [packIds, updatePack]);
 
   const sharePath = useMemo(() => {
     const nextSearch = new URLSearchParams(searchParams.toString());
@@ -108,12 +105,10 @@ export const useOpsPack = (availableIds: string[]) => {
     return query ? `${pathname}?${query}` : pathname;
   }, [packIds, pathname, searchParams]);
 
-  const [shareUrl, setShareUrl] = useState(sharePath);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setShareUrl(`${window.location.origin}${sharePath}`);
-  }, [sharePath]);
+  const shareUrl =
+    typeof window === "undefined"
+      ? sharePath
+      : `${window.location.origin}${sharePath}`;
 
   return {
     packIds,

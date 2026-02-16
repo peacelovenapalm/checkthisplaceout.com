@@ -13,7 +13,7 @@ This project expects Supabase + local env vars. Follow these steps once.
 2) In the dashboard, grab:
    - Project URL
    - Publishable key (`sb_publishable_...`)
-   - Service role key (`sb_secret_...`) for admin actions
+   - Service role key (`sb_secret_...`) required for admin invite/reset actions
 3) Click-path to keys:
    - Supabase Dashboard → Project Settings → API
    - Copy the Project URL + Publishable key + Service Role key
@@ -24,7 +24,7 @@ This project expects Supabase + local env vars. Follow these steps once.
 2) Fill in:
    - `NEXT_PUBLIC_SUPABASE_URL=...`
    - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...`
-   - `SUPABASE_SECRET_KEY=...`
+   - `SUPABASE_SECRET_KEY=...` (required for admin invite/reset flows)
 3) Run doctor:
    - `npm run doctor`
 
@@ -33,6 +33,8 @@ This project expects Supabase + local env vars. Follow these steps once.
    - Supabase Dashboard → SQL Editor → New query
 2) Paste and run the full contents of:
    - `supabase/migrations/20250309120000_v065_init.sql`
+3) Paste and run the full contents of:
+   - `supabase/migrations/20250309121000_v065_cast_vote_rpc.sql`
 
 ## Seed the first admin profile
 1) Sign in once via `/login` so the user exists in `auth.users`.
